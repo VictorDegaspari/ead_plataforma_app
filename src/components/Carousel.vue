@@ -51,6 +51,8 @@ p,h5 {
   background: #F50057;
   width: fit-content;
   text-align: center;
+  padding: 5px;
+  border-radius: 8px 0;
 }
 h5{
   font-weight: bolder;

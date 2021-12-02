@@ -1,13 +1,6 @@
 <template>
 <div>
-    <!-- MENU DE NAVEGACAO AQUI -->
-    <Nav/>
-  <p>
-    <router-link to="/register">Register</router-link>
-    <br>
-    <br>
-    <router-link to="/">Login</router-link>
-  </p>
+  <Nav/>
   <router-view></router-view>
 </div>
 </template>
@@ -38,6 +31,11 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  background: #e6e6e6;
   margin-top: 60px;
+  width: 100%;
+  margin: 0;
+  min-height: 100vh;
+  padding: 76px 20px 20px 20px;
 }
 </style>

@@ -19,7 +19,22 @@ const router = VueRouter.createRouter({
                 title: 'Ead Plataforma - Registre-se Grátis',
             }
         },
-        
+        {
+            path: '/courses',
+            name: 'Courses',
+            component: () => import('@/views/Courses/index'),
+            meta: {
+                title: 'Cursos',
+            }
+        },
+        {
+            path: '/home',
+            name: 'Home',
+            component: () => import('@/views/Home/index'),
+            meta: {
+                title: 'Página inicial',
+            }
+        },
     ],
 
 })

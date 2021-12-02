@@ -20,7 +20,7 @@ const router = VueRouter.createRouter({
             }
         },
         {
-            path: '/courses',
+            path: '/courses/:id?',
             name: 'Courses',
             component: () => import('@/views/Courses/index'),
             meta: {

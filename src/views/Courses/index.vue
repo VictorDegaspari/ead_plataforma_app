@@ -1,17 +1,66 @@
 <template>
-  <div><Card/></div>
+  <div class="course-page">
+    <button class="m--5 btn btn-dark">Criar novo curso</button>
+    <button v-show="this.$route.query.id" @click="this.$router.push('/courses')" class=" m--5 btn btn-dark">Voltar</button>
+    <div id="courses">
+      <div class="m--5" v-for="course in courses" :key="course.id">
+        <Card :id="course.id" :title="course.title" :description="course.description" v-show="showOption(course.id)"/>
+      </div>
+    </div>
+
+  </div>
 </template>
 
 <script>
 import Card from '../../components/Card.vue';
 export default {
-    components: {
-        Card
+  components: {
+      Card
+  },
+  data: () => {
+    return {
+      // EXEMPLO
+      courses: [
+        { id: 1, title: "Curso1", description:"Descrição" },
+        { id: 3, title: "Curso2", description:"Descrição" },
+        { id: 4 , title: "Curso3", description:"Descrição"},
+        { id: 5 , title: "Curso4", description:"Descrição"},
+        { id: 6, title: "Curso5", description:"Descrição" },
+        { id: 7 , title: "Curso6", description:"Descrição"},
+        { id: 8, title: "Curso7", description:"Descrição" },
+        { id: 9 , title: "Curso8", description:"Descrição"},
+        { id: 10 , title: "Curso9", description:"Descrição"},
+      ]
     }
+  },
+  methods:{
+    showOption(course){
+      let id = parseInt(this.$route.query.id);
+      if (id && id !== course) {
+        return false
+      }
+      return true
+    }
+  }
 
 }
 </script>
 
-<style>
-
+<style scoped>
+  #courses {
+    display: flex;
+    flex-flow: wrap;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
+    max-height: 500px;
+    /* overflow: auto; */
+    flex-flow: row wrap;
+  }
+  .m--5 {
+    margin: 5px;
+  }
+  .course-page {
+    min-height: 100vh;
+  }
 </style>

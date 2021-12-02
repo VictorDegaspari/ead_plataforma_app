@@ -1,7 +1,7 @@
 <template>
 <div>
     <!-- MENU DE NAVEGACAO AQUI -->
-    <h1>EAD PLATAFORMA!</h1>
+    <Nav/>
   <p>
     <router-link to="/register">Register</router-link>
     <br>
@@ -13,10 +13,12 @@
 </template>
 
 <script>
-
+import Nav from '@/components/Navigation.vue';
 export default {
   name: 'App',
-  components: {},
+  components: {
+    Nav
+  },
   watch: {
     $route: {
       immediate: true,

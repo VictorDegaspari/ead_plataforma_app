@@ -1,6 +1,6 @@
 <template>
 <div>
-  <Nav/>
+  <Nav v-if="ignoreDomains()"/>
   <router-view></router-view>
 </div>
 </template>
@@ -20,6 +20,11 @@ export default {
         document.title = to.meta.title;
       }
     },
+  },
+  methods: {
+    ignoreDomains() {
+      return this.$route.path === '/' ||  this.$route.path === '/register' ? false : true
+    }
   }
 }
 </script>

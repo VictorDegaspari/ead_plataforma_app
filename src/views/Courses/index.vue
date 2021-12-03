@@ -13,6 +13,7 @@
 
 <script>
 import Card from '../../components/Card.vue';
+import api from '../../api.js';
 export default {
   components: {
       Card
@@ -34,14 +35,27 @@ export default {
     }
   },
   methods:{
-    showOption(course){
+    showOption(course) {
       let id = parseInt(this.$route.query.id);
       if (id && id !== course) {
         return false
       }
       return true
-    }
-  }
+    },
+    async coursesResource() {
+      try {
+       const courses = await api.get('api/courses');
+       console.log(courses)
+        
+      } catch (error) {
+        console.error(error)
+      }
+    },
+  },
+  created() {
+    this.coursesResource()
+
+  },
 
 }
 </script>

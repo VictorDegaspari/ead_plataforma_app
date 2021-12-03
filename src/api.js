@@ -3,13 +3,15 @@ import axios from "axios";
 const api = axios.create({
   baseURL: `${process.env.VUE_APP_API_URL}/`
 })
+let token = localStorage.token;
 
 api.interceptors.request.use(
   function (config) {
     
     config.headers = Object.assign({}, config.headers, {
       'Content-Type': 'application/json',
-      'Accept': 'application/json'
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${token}`
     })
 
     return config;

@@ -5,14 +5,14 @@
       <h1>EAD PLATAFORMA</h1>
       <div class="input-group mb-3 ">
         <label class="input-group-text" for="email">Email</label>
-        <input class="form-control" id="email" type="email"/>
+        <input class="form-control" id="email" v-model="email"/>
       </div>
       <div class="input-group mb-3">
         <label class="input-group-text" for="password">Senha</label>
-        <input class="form-control" id="password" type="password"/>
+        <input class="form-control" id="password" v-model="password"/>
       </div>
       <div class="d-grid gap-2 col-6 mx-auto">
-        <button class="btn btn-primary" @click="this.$router.push('/home')">Entrar</button>
+        <button class="btn btn-primary" @click="login()">Entrar</button>
       </div>
     </div>
 
@@ -20,8 +20,29 @@
 </template>
 
 <script>
+import api from '../../api.js';
 export default {
+  data() {
+    return {
+      email: null,
+      password: null
+    }
+  },
+  methods:{
 
+    async login() {
+      try {
+        const user = await api.post('api/login', {email: this.email, password: this.password});
+        localStorage.token = user.data.data.token
+        this.$router.push('/home')
+        this.$toast.open({ message: 'Login realizado com sucesso!', type: 'success' })
+        
+      } catch (error) {
+        this.$toast.open({ message: 'E-mail ou senha inválidos. Por favor insira um válido.', type: 'error' })
+        console.error(error)
+      }
+    },
+    },
 }
 </script>
 
@@ -33,7 +54,7 @@ export default {
   left: 0;
   right: 0;
   background: #e6e6e6;
-  z-index: 999999;
+  z-index: 99;
 }
 .left, .right {
   width: 50%;

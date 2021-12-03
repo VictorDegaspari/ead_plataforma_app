@@ -71,6 +71,12 @@ h5{
   height: 300px;
   
 }
-.carousel-control-prev-icon{
+.carousel-control-prev-icon,.carousel-control-next-icon, button {
+ filter: drop-shadow(0 0 3px rgb(22, 22, 22));
+}
+button.active {
+  height: 3px;
+  margin: 0;
+  filter: drop-shadow(0 0 3px #F50057);
 }
 </style>

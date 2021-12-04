@@ -41,6 +41,6 @@ export default {
   width: 100%;
   margin: 0;
   min-height: 100vh;
-  padding: 76px 20px 20px 20px;
+  padding: 56px 0 0 0;
 }
 </style>

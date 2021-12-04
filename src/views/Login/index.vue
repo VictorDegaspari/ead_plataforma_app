@@ -13,6 +13,7 @@
       </div>
       <div class="d-grid gap-2 col-6 mx-auto">
         <button class="btn btn-primary" @click="login()">Entrar</button>
+        <a  @click="this.$route.push('/register')">Não possui conta? Registre-se agora!</a>
       </div>
     </div>
 

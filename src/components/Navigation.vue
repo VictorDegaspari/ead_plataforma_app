@@ -17,6 +17,11 @@
             <router-link to="/courses">Cursos</router-link>
           </a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link">
+            <router-link to="/favorites">Favoritos</router-link>
+          </a>
+        </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Opções
@@ -38,15 +43,17 @@
 </template>
 
 <style scoped>
-    li, a {
-        text-decoration: none;
-        color: #151515;
-    }
-    nav {
-        position: absolute;
-        left: 0;
-        top: 0;
-        right: 0;
-        z-index: 9999;
-    }
+  li, a {
+    text-decoration: none;
+    color: #151515;
+  }
+  nav {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    z-index: 9999;
+  }
+
+
 </style>

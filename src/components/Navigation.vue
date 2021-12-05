@@ -1,25 +1,25 @@
 <template>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
-    <a class="navbar-brand"><router-link to="/home">EAD PLATAFORMA</router-link></a>
+    <a class="navbar-brand" style="cursor:default">EAD PLATAFORMA</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-            <a class="nav-link active" aria-current="page"> 
-                <router-link to="/home">Home</router-link>
+        <li @click="setActive('/home'), this.$router.push('/home')" class="nav-item" :class="{ active:isActive('/home') }">
+            <a class="nav-link" aria-current="page"> 
+                Home
             </a>
         </li>
-        <li class="nav-item">
+        <li @click="setActive('/courses'), this.$router.push('/courses')" class="nav-item" :class="{ active:isActive('/courses') }">
           <a class="nav-link">
-            <router-link to="/courses">Cursos</router-link>
+            Cursos
           </a>
         </li>
-        <li class="nav-item">
+        <li @click="setActive('/favorites'), this.$router.push('/favorites')" class="nav-item" :class="{ active:isActive('/favorites') }">
           <a class="nav-link">
-            <router-link to="/favorites">Favoritos</router-link>
+            Favoritos
           </a>
         </li>
         <li class="nav-item dropdown">
@@ -42,12 +42,40 @@
 </nav>
 </template>
 
+<script>
+export default {
+  data: () => {
+    return {
+      activeItem: 'about'
+    }
+  },
+  methods:{
+    isActive: function (menuItem) {
+      return this.activeItem === menuItem
+    },
+    setActive: function (menuItem) {
+      this.activeItem = menuItem // no need for Vue.set()
+    }
+  },
+  mounted() {
+    this.isActive(this.$route.path)
+    this.setActive(this.$route.path)
+
+  }
+
+}
+</script>
 <style scoped>
   li, a {
     text-decoration: none;
     color: #151515;
+    cursor: pointer;
+  }
+  .active {
+    border-bottom: 3px solid #00BFA6;
   }
   nav {
+    padding-bottom:0 ;
     position: absolute;
     left: 0;
     top: 0;

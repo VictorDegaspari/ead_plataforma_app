@@ -154,6 +154,7 @@ margin: 5px;
     -webkit-flex-wrap: wrap;
     flex-wrap: wrap;
     li {
+        background: white;
         margin-right: 60px;
         margin-bottom: 30px;
         display: flex;

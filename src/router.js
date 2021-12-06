@@ -12,6 +12,14 @@ const router = VueRouter.createRouter({
             }
         },
         {
+            path: '/favorites',
+            name: 'Favorites',
+            component: () => import('@/views/Favorites/index'),
+            meta: {
+                title: 'Favoritos',
+            }
+        },
+        {
             path: '/',
             name: 'Login',
             component: () => import('@/views/Login/index'),
@@ -35,6 +43,22 @@ const router = VueRouter.createRouter({
                 title: 'Página inicial',
             }
         },
+        { 
+            path: "/:pathMatch(.*)*",
+            name: 'NotFound',
+            component: () => import('@/views/NotFound/index'),
+            meta: {
+                title: 'Página não encontrada',
+            }
+        },
+        { 
+            path: "/categories",
+            name: 'Categories',
+            component: () => import('@/views/Categories/index'),
+            meta: {
+                title: 'Categorias',
+            }
+        }
     ],
 
 })

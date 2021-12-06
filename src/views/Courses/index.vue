@@ -1,7 +1,9 @@
 <template>
   <div class="course-page">
-    <button class="m--5 btn btn-dark">Criar novo curso</button>
-    <button v-show="this.$route.query.id" @click="this.$router.push('/courses')" class=" m--5 btn btn-dark">Voltar</button>
+    <header class="m-5">
+      <button class="btn btn-dark">Criar novo curso</button>
+      <button v-show="this.$route.query.id" @click="this.$router.push('/courses')" class=" m--5 btn btn-dark">Voltar</button>
+    </header>
     <div id="courses">
       <div class="m--5" v-for="course in courses" :key="course.id">
         <Card :id="course.id" :title="course.title" :description="course.description" v-show="showOption(course.id)"/>
@@ -70,11 +72,16 @@ export default {
     max-height: 500px;
     /* overflow: auto; */
     flex-flow: row wrap;
+    position: relative;
+    height: 100%;
   }
   .m--5 {
     margin: 5px;
   }
   .course-page {
+    padding-top: 20px;
     min-height: 100vh;
+    padding-bottom: 20px;
+
   }
 </style>

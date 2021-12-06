@@ -1,7 +1,10 @@
 <template>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
-    <a class="navbar-brand" style="cursor:default">EAD PLATAFORMA</a>
+    <a class="navbar-brand" style="cursor:default">
+      EAD PLATAFORMA
+      <!-- <img style="margin:0 10px" :src="profile" alt=""> -->
+    </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -22,6 +25,11 @@
             Favoritos
           </a>
         </li>
+        <li @click="setActive('/categories'), this.$router.push('/categories')" class="nav-item" :class="{ active:isActive('/categories') }">
+          <a class="nav-link">
+            Categorias
+          </a>
+        </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Opções
@@ -33,10 +41,10 @@
           </ul>
         </li>
       </ul>
-      <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
+      <div class="d-flex user" style="cursor:pointer">
+        <p style="margin:0">Olá, {{ this.user?.name || 'usuário' }}</p>
+        <img style="margin:0 10px" :src="profile" alt="">
+      </div>
     </div>
   </div>
 </nav>
@@ -46,7 +54,9 @@
 export default {
   data: () => {
     return {
-      activeItem: 'about'
+      profile: require('@/assets/icons/profile.svg'),
+      activeItem: 'about',
+      user:  null
     }
   },
   methods:{
@@ -58,9 +68,9 @@ export default {
     }
   },
   mounted() {
-    this.isActive(this.$route.path)
-    this.setActive(this.$route.path)
-
+    this.isActive(this.$route.path);
+    this.setActive(this.$route.path);
+    this.user = JSON.parse(localStorage.getItem('user'));
   }
 
 }
@@ -82,6 +92,11 @@ export default {
     right: 0;
     z-index: 9999;
   }
-
-
+  img {
+    height: 32px;
+    width: 32px;
+  }
+  .user {
+    align-items: center;
+  }
 </style>

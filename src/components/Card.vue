@@ -1,9 +1,16 @@
 <template>
 <div class="card" style="width: 18rem;">
 <!-- <img src="" class="card-img-top" alt="..."> -->
-<div class="card-body" @click="detailRedirect()">
+<div class="card-body">
     <h5 class="card-title">{{ title }}</h5>
-    <p class="card-text">{{ description }}</p>
+    <p style="margin:5px" class="card-text">{{ description }}</p>
+
+    <div class="flex">
+        <div class="stage" v-if="showHeart">
+            <div @click="likeCourse = !likeCourse; this.$emit('like', likeCourse)" class="heart" :class="{'is-active': likeCourse}"></div>
+        </div>
+        <button class="btn btn-light" @click="detailRedirect()">{{textButton}}</button>
+    </div>
 </div>
 </div>
 </template>
@@ -14,10 +21,14 @@ export default {
         title: String,
         description: String,
         textButton: {type: String, default:"Detalhes"},
+        showHeart: {type: Boolean, default: true},
         id: Number
     },
+    emits: ['like'],
     data() {
-
+        return{
+            likeCourse : false
+        }
 	},
     methods: {
         detailRedirect() {
@@ -98,5 +109,36 @@ export default {
     background: #2F2E41;
     color: white;
 }
+// TWITTER HEART
+.heart {
+  width: 100px;
+  height: 100px;
+  background: url("https://cssanimation.rocks/images/posts/steps/heart.png") no-repeat;
+  background-position: 0 0;
+  cursor: pointer;
+  transition: background-position 1s steps(28);
+  transition-duration: 0s;
+  
+  &.is-active {
+    transition-duration: 1s;
+    background-position: -2800px 0;
+  }
+}
 
+// BASIC
+body {
+  background: linear-gradient(135deg, #121721 0%, #000000 100%) fixed;
+  color: #FFF;
+  font: 300 16px/1.5 "Open Sans", sans-serif;
+}
+
+.stage {
+  position: relative;
+}
+.flex {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
 </style>

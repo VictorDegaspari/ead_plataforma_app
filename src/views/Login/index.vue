@@ -9,7 +9,7 @@
       </div>
       <div class="input-group mb-3">
         <label class="input-group-text" for="password">Senha</label>
-        <input class="form-control" id="password" v-model="password"/>
+        <input class="form-control" type="password" id="password" v-model="password"/>
       </div>
       <div class="d-grid gap-2 col-6 mx-auto">
         <button class="btn btn-primary" @click="login()">Entrar</button>

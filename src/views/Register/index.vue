@@ -88,6 +88,7 @@ export default {
                 const user = await api.post('api/register', {name: this.name, email: this.email, password: this.password, c_password: this.c_password});
                 localStorage.token = user.data.data.token;
                 this.$router.push('/home');
+                this.$toast.open({ message: 'Conta criada com sucesso!', type: 'success' })
                 
             } catch (error) {
                 this.$toast.open({ message: 'E-mail ou senha inválidos. Por favor insira um válido.', type: 'error' });

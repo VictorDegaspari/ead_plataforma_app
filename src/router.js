@@ -58,6 +58,14 @@ const router = VueRouter.createRouter({
             meta: {
                 title: 'Categorias',
             }
+        },
+        { 
+            path: "/profile",
+            name: 'Profile',
+            component: () => import('@/views/Profile/index'),
+            meta: {
+                title: 'Perfil',
+            }
         }
     ],
 

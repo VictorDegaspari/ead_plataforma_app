@@ -79,10 +79,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800&display=swap');
-* {
-    font-family: 'Inter', sans-serif;
-}
 #home {
     background-repeat: no-repeat;
     min-width: 100%;

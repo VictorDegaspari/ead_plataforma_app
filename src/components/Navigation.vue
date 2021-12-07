@@ -41,7 +41,7 @@
           </ul>
         </li>
       </ul>
-      <div class="d-flex user" style="cursor:pointer">
+      <div class="d-flex user" style="cursor:pointer" @click="goToProfile()">
         <p style="margin:0">Olá, {{ this.user?.name || 'usuário' }}</p>
         <img style="margin:0 10px" :src="profile" alt="">
       </div>
@@ -65,6 +65,9 @@ export default {
     },
     setActive: function (menuItem) {
       this.activeItem = menuItem // no need for Vue.set()
+    },
+    goToProfile() {
+      this.$router.push({path: `/profile`})
     }
   },
   mounted() {

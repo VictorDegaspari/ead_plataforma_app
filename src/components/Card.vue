@@ -32,8 +32,7 @@ export default {
 	},
     methods: {
         detailRedirect() {
-        this.$router.push(`/courses?id=${this.$props.id}`)
-
+            this.$router.push(`/courses?id=${this.$props.id}`)
         }
     }
 }

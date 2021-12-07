@@ -67,12 +67,18 @@ export default {
         },
         async editUser() {
             try {
-                await api.put(`api/users/${this.id}`, {email: this.email, name: this.name});
-                this.$toast.open({ message: 'Usuário atualizado com sucesso!', type: 'success' })
-                
+              const user = await api.put(`api/users/${this.id}`, {email: this.email, name: this.name});
+              localStorage.setItem('user', JSON.stringify(user.data.data));
+              this.disabled = true;
+              window.dispatchEvent(new CustomEvent('updateName', {
+                detail: {
+                  name: user.data.data.name
+                }
+              }));
+              this.$toast.open({ message: 'Usuário atualizado com sucesso!', type: 'success' })
             } catch (error) {
-                this.$toast.open({ message: 'Erro ao salvar usuário', type: 'error' })
-                console.error(error)
+              this.$toast.open({ message: 'Erro ao salvar usuário', type: 'error' })
+              console.error(error)
             }
         },
     },

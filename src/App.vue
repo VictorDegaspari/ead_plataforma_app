@@ -24,7 +24,7 @@ export default {
   methods: {
     ignoreDomains() {
       return this.$route.path === '/' ||  this.$route.path === '/register' ? false : true
-    }
+    },
   }
 }
 </script>

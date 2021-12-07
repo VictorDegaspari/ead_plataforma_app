@@ -74,6 +74,10 @@ export default {
     this.isActive(this.$route.path);
     this.setActive(this.$route.path);
     this.user = JSON.parse(localStorage.getItem('user'));
+    window.addEventListener('updateName', (event) => {
+      this.user.name = event.detail?.name;
+      console.log(event)
+    });
   }
 
 }

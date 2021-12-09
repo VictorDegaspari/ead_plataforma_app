@@ -985,6 +985,18 @@
   "resolved" "https://registry.npmjs.org/@soda/get-current-script/-/get-current-script-1.0.2.tgz"
   "version" "1.0.2"
 
+"@splidejs/splide@^3.6.9":
+  "integrity" "sha512-uQXmn0NUrlOhBCYJ8Qy4ZbCOu/fY7nTkEQUIjoKpuY10UJu1pddHquI/pmMCh/oIjhxDQFVd7TnDMq5m7JDdZA=="
+  "resolved" "https://registry.npmjs.org/@splidejs/splide/-/splide-3.6.9.tgz"
+  "version" "3.6.9"
+
+"@splidejs/vue-splide@^0.5.15":
+  "integrity" "sha512-upzHn2MJp/VgSDR8IkJ//u1jPCWzzntn5tlM5yAU8LBtckOgrpLWyqwCtMOBU7PKIc1/V9+KMhqlyHfEYXWL3g=="
+  "resolved" "https://registry.npmjs.org/@splidejs/vue-splide/-/vue-splide-0.5.15.tgz"
+  "version" "0.5.15"
+  dependencies:
+    "@splidejs/splide" "^3.6.9"
+
 "@types/babel-types@*", "@types/babel-types@^7.0.0":
   "integrity" "sha512-pkPtJUUY+Vwv6B1inAz55rQvivClHJxc9aVEPPmaq2cbyeMLCiDpbKpcKyX4LAwpNGi+SHBv0tHv6+0gXv0P2A=="
   "resolved" "https://registry.npmjs.org/@types/babel-types/-/babel-types-7.0.11.tgz"

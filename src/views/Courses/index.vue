@@ -5,9 +5,16 @@
       <button v-show="this.$route.query.id" @click="this.$router.push('/courses')" class=" m--5 btn btn-dark">Voltar</button>
     </header>
     <div id="courses">
+
+      <div class="d-flex" style="flex-direction:column; align-items:center" v-if="courses?.length === 0">
+        <h2>Nenhum curso cadastrado ;(</h2>
+        <img :src="empty" alt="empty" width="300">
+      </div>
+
       <div class="m--5" v-for="course in courses" :key="course.id">
         <Card :id="course.id" :title="course.title" :description="course.description" v-show="showOption(course.id)"/>
       </div>
+
     </div>
 
   </div>
@@ -22,6 +29,7 @@ export default {
   },
   data: () => {
     return {
+      empty: require('@/assets/empty.svg'),
       // EXEMPLO
       courses: [
         { id: 1, title: "Curso1", description:"Descrição" },

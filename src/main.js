@@ -1,3 +1,7 @@
+import '@splidejs/splide/dist/css/splide.min.css'
+// or
+import '@splidejs/splide/dist/css/themes/splide-default.min.css'
+import VueSplide from '@splidejs/vue-splide'
 import axios from 'axios'
 import "bootstrap"
 import "bootstrap/dist/css/bootstrap.min.css"
@@ -22,4 +26,5 @@ app.use(VueToast, {
 app.use(VueTheMask)
 app.use(router);
 
-app.mount('#app')
+app.use( VueSplide );
+app.mount( '#app' );

@@ -47,4 +47,5 @@ export default {
   min-height: 100vh;
   padding: 50px 0 0 0;
 }
+
 </style>

@@ -40,12 +40,15 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  background: #e6e6e6;
+  background: #dfdfdf;
   margin-top: 60px;
   width: 100%;
   margin: 0;
   min-height: 100vh;
   padding: 50px 0 0 0;
+  z-index: -99999999;
+  position: absolute;
+  overflow: hidden;
 }
 
 </style>

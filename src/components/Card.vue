@@ -116,19 +116,7 @@ export default {
     color: #e5f1ff;
     transition : 0.7s;
     cursor: pointer;
-    border-top-style: solid;
-    border-top-width: 0.04em;
-    border-right-style: solid;
-    border-right-width: 0.04em;
-    border-bottom-style: solid;
-    border-bottom-width: 0.04em;
-    border-left-style: solid;
-    border-left-width: 0.04em;
-    border-image-source: initial;
-    border-image-slice: initial;
-    border-image-width: initial;
-    border-image-outset: initial;
-    border-image-repeat: initial;
+    border: 2px solid;
     -webkit-transition: .3s;
     transition: .3s;
     border-top-left-radius: 0.5em;
@@ -138,20 +126,7 @@ export default {
     background-color: #051d3b;
     box-shadow: 0.31em 0.37em 0.87em 0.87em rgb(0 0 0 / 4%);
     &:hover{
-      border-top-style: solid;
-      border-top-width: 1px;
-      border-right-style: solid;
-      border-right-width: 1px;
-      border-bottom-style: solid;
-      border-bottom-width: 1px;
-      border-left-style: solid;
-      border-left-width: 1px;
-      border-image-source: initial;
-      border-image-slice: initial;
-      border-image-width: initial;
-      border-image-outset: initial;
-      border-image-repeat: initial;
-      margin-top: -20px;
+      /* margin-top: -20px; */
       opacity: 0.9;
     }
     h5 {

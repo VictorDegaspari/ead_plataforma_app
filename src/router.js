@@ -31,6 +31,13 @@ const router = VueRouter.createRouter({
             path: '/courses/:id?',
             name: 'Courses',
             component: () => import('@/views/Courses/index'),
+            children: [
+                // UserHome will be rendered inside User's <router-view>
+                // when /user/:id is matched
+                // { path: '/create', component: UserHome }
+        
+                // ...other sub routes
+            ],
             meta: {
                 title: 'Cursos',
             }

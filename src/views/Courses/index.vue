@@ -1,21 +1,25 @@
 <template>
   <div class="course-page">
     <header class="m-3">
-      <button class="btn btn-dark" @click.prevent="showCreate = true"  v-show="!showCreate">ADICIONAR CURSO</button>
+      <button class="btn btn-dark" @click="this.showCreate = true" >ADICIONAR CURSO</button>
       <h1 style="color:#151515;" class="titles" v-show="showCreate">CADASTRO DE CURSO</h1>
       <button v-show="this.$route.query.id" @click.prevent="this.$router.push('/courses')" class=" m--5 btn btn-dark">Voltar</button>
     </header>
+
+
     <div id="courses" v-if="!showCreate">
       <div class="d-flex" style="flex-direction:column; align-items:center" v-if="courses?.length === 0">
         <h2>Nenhum curso cadastrado ;(</h2>
         <img :src="empty" alt="empty" width="300">
       </div>
-
-      <div class="m--5" v-for="course in courses" :key="course.id">
-        <Card :id="course.id" :title="course.title" :description="course.description" v-show="showOption(course.id)"/>
-      </div>
+      <Splide style="margin-top:10px;" :options="options"  v-for="course in courses" :key="course.id">
+          <SplideSlide  v-for="course in courses" :key="course.id">
+              <Card :id="course.id" :title="course.title" :description="course.description" :category="course.category.title" :color="course.category.color"/>
+          </SplideSlide>
+      </Splide>
 
     </div>
+    
 
     <div class="create d-flex" v-if="showCreate">
       <h3 class="titles">Título</h3>
@@ -37,7 +41,12 @@
       </div>
 
       <h3 class="titles">Categoria</h3>
-      <select class="w-100" name="" id=""></select>
+      <select class="w-100">
+        <option v-for="category in categories" :value="item" :key="category.id">
+          {{ category.title }}
+        </option>
+        <p>TESTE</p>
+      </select>
 
       <h3 class="titles">URL</h3>
       <div class="form-floating mb-3 w-100">
@@ -56,16 +65,27 @@
 </template>
 
 <script>
+import { defineComponent } from 'vue';
+
 import Card from '../../components/Card.vue';
 import api from '../../api.js';
+import { Splide, SplideSlide } from '@splidejs/vue-splide';
 
-export default {
+export default defineComponent( {
   components: {
-      Card
+    Card,    
+    Splide,
+    SplideSlide
   },
   
-  data: () => {
+  setup(){
+    const options = {
+      rewind        : true,
+      perPage       : 5,
+      perMove       : 1,
+    };
     return {
+      options,
       empty: require('@/assets/empty.svg'),
       course: require('@/assets/createCourse.svg'),
       moon: require('@/assets/moon.svg'),
@@ -76,18 +96,14 @@ export default {
       category: null,
       // EXEMPLO
       courses: [
-        { id: 1, title: "Curso1", description:"Descrição" },
-        { id: 3, title: "Curso2", description:"Descrição" },
-        { id: 4 , title: "Curso3", description:"Descrição"},
-        { id: 5 , title: "Curso4", description:"Descrição"},
-        { id: 6, title: "Curso5", description:"Descrição" },
-        { id: 7 , title: "Curso6", description:"Descrição"},
-        { id: 8, title: "Curso7", description:"Descrição" },
-        { id: 9 , title: "Curso8", description:"Descrição"},
-        { id: 10 , title: "Curso9", description:"Descrição"},
+        { id: 1, title: "Curso1", description:"Descrição", category: { id: 1, title: "Medicina", description:"Descrição", color: "#0D6EFD" } },
+        { id: 3, title: "Curso2", description:"Descrição", category: { id: 2, title: "Psicologia", description:"Descrição", color: "#0D6EFD" } },
+        { id: 4 , title: "Curso3", description:"Descrição", category: { id: 3, title: "Saúde mental", description:"Descrição", color: "#DC3545" } },
+        { id: 5 , title: "Curso4", description:"Descrição", category: { id: 4, title: "Farmácia", description:"Descrição", color: "#DC3545" } },
+        { id: 6, title: "Curso5", description:"Descrição", category: { id: 5, title: "Farmácia", description:"Descrição", color: "red" } },
+        { id: 7 , title: "Curso6", description:"Descrição", category: { id: 6, title: "Farmácia", description:"Descrição", color: "red" } },
       ],
-      categories: [{ id: 1, title: "Curso1", description:"Descrição" }],
-      showCreate: false
+      showCreate: null
     }
   },
   methods:{
@@ -113,7 +129,7 @@ export default {
 
   },
 
-}
+})
 </script>
 
 <style lang="scss" scoped>
@@ -125,7 +141,7 @@ export default {
     justify-content: center;
     max-width: 100%;
     max-height: 500px;
-    /* overflow: auto; */
+    overflow: auto;
     flex-flow: row wrap;
     position: relative;
     height: 100%;
@@ -172,7 +188,7 @@ export default {
     border-top-color: transparent;
     border-bottom-style: solid;
     border-bottom-color: #6C63FF;
-    padding: 16px;
+    padding: 12px;
     margin-bottom: 45px;
     resize: none;
     border-radius: 4px;
@@ -184,8 +200,10 @@ export default {
     color: white;
   }
   .background {
-    position: absolute;
+    position: fixed;
     z-index: -1;
     width: 100%;
+    left: 0;
+    top: 0;
   }
 </style>

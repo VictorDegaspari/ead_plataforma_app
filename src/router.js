@@ -28,7 +28,7 @@ const router = VueRouter.createRouter({
             }
         },
         {
-            path: '/courses/:id?',
+            path: '/courses',
             name: 'Courses',
             component: () => import('@/views/Courses/index'),
             children: [
@@ -40,6 +40,14 @@ const router = VueRouter.createRouter({
             ],
             meta: {
                 title: 'Cursos',
+            }
+        },
+        {
+            path: '/course-details/:id?',
+            name: 'Course Details',
+            component: () => import('@/views/CourseDetails/index'),
+            meta: {
+                title: 'Detalhe do curso',
             }
         },
         {

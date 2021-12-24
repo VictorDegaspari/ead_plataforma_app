@@ -1,8 +1,8 @@
 <template>
   <div class="course-page">
     <header class="m-3">
-      <button class="btn btn-dark" @click="this.showCreate = true" >ADICIONAR CURSO</button>
-      <h1 style="color:#151515;" class="titles" v-show="showCreate">CADASTRO DE CURSO</h1>
+      <button class="btn btn-dark" @click="showCreate = true" v-show="!showCreate">ADICIONAR CURSO</button>
+      <button class="btn btn-dark" @click="showCreate = false" v-show="showCreate">VOLTAR</button>
       <button v-show="this.$route.query.id" @click.prevent="this.$router.push('/courses')" class=" m--5 btn btn-dark">Voltar</button>
     </header>
 
@@ -22,6 +22,7 @@
     
 
     <div class="create d-flex" v-if="showCreate">
+      <h1 style="text-align:center;" class="titles m-3">CADASTRO DE CURSO</h1>
       <h3 class="titles">Título</h3>
       <div class="form-floating mb-3 w-100">
         <input type="text" class="form-control" id="floatingInput" v-model="title" placeholder="Title">
@@ -36,8 +37,8 @@
 
       <h3 class="titles">Duração</h3>
       <div class="form-floating mb-3 w-100">
-        <input type="text" id="time" v-mask="['##:##', '###:##']" class="form-control" v-model="time" placeholder="00:00">
-        <label for="time">00:00</label>
+        <input type="text" id="time" v-mask="['##:##', '###:##']" class="form-control" v-model="time" placeholder="HH:mm">
+        <label for="time">HH:mm</label>
       </div>
 
       <h3 class="titles">Categoria</h3>
@@ -45,9 +46,8 @@
         <option v-for="category in categories" :value="item" :key="category.id">
           {{ category.title }}
         </option>
-        <p>TESTE</p>
       </select>
-
+      <!-- <a href=""><small>Cadastrar nova categoria</small></a> -->
       <h3 class="titles">URL</h3>
       <div class="form-floating mb-3 w-100">
         <input type="text" id="URL" class="form-control" v-model="url" placeholder="URL do vídeo">
@@ -78,7 +78,7 @@ export default defineComponent( {
     SplideSlide
   },
   
-  setup(){
+  data(){
     const options = {
       rewind        : true,
       perPage       : 5,
@@ -140,7 +140,6 @@ export default defineComponent( {
     align-items: center;
     justify-content: center;
     max-width: 100%;
-    max-height: 500px;
     overflow: auto;
     flex-flow: row wrap;
     position: relative;
@@ -153,7 +152,7 @@ export default defineComponent( {
     padding: 0 0px;
     min-height: 100vh;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     flex-direction: column;
 

@@ -1,14 +1,17 @@
 <template>
 <div class="categories w-100">
-    <button class="m-3 btn btn-dark" @click.prevent="showCreate = true">CRIAR CATEGORIA</button>
+    <header class="m-3">
+      <button class="m-3 btn btn-dark" @click.prevent="showCreate = true" v-show="!showCreate">CRIAR CATEGORIA</button>
+      <button class="btn btn-dark" @click="showCreate = false" v-show="showCreate">VOLTAR</button>
+    </header>
 
     <div class="w-100 categories-list" v-if="!showCreate">
       <div style="margin:5px;" v-for="category in categories" :key="category.id">
-        <Card :id="category.id" :title="category.title" :description="category.description" category="categoria" :color="category.color"/>
+        <Card :showDetails="false" :id="category.id" :title="category.title" :description="category.description" category="categoria" :color="category.color"/>
       </div>
 
-      <div id="courses" v-if="!showCreate">
-        <div class="d-flex" style="flex-direction:column; align-items:center" v-if="courses?.length === 0">
+      <div id="courses">
+        <div class="d-flex" style="flex-direction:column; align-items:center" v-if="categories?.length === 0">
           <h2>Nenhuma categoria cadastrada ;(</h2>
           <img :src="empty" alt="empty" width="300">
         </div>
@@ -16,6 +19,8 @@
     </div>
 
     <div class="create d-flex" v-if="showCreate">
+      <h1 style="text-align:center;" class="titles m-3">CADASTRO DE CATEGORIA</h1>
+
       <h3 class="titles">Título</h3>
       <div class="form-floating mb-3 w-100">
         <input type="text" class="form-control" id="floatingInput" v-model="title" placeholder="Title">
@@ -39,7 +44,7 @@
         <button style="background:#00BFA6; color: white" class="btn w-50">CRIAR</button>
       </div>
     </div>
-    <img class="background" :src="moon" alt="cadastroCursos" v-if="!showCreate" height="1000">
+    <img class="background" :src="moon" alt="cadastroCursos" v-if="!showCreate && categories.length > 0" height="1000">
     <img class="background" :src="course" alt="cadastroCurso" v-if="showCreate">
   </div>
 </template>
@@ -95,6 +100,10 @@ export default defineComponent( {
   .categories {
     min-height: 100%;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     /* background: #151515; */
   }
     .course-page {
@@ -112,7 +121,7 @@ export default defineComponent( {
     background: #051d3b;
     min-height: 100vh;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
@@ -157,6 +166,7 @@ export default defineComponent( {
     display: flex;
     flex-flow: wrap;
     align-items: center;
+    flex-direction: column;
     justify-content: center;
     max-width: 100%;
     max-height: 100%;

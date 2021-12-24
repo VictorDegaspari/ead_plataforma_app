@@ -55,7 +55,7 @@
                 </label>
             </div>
         </div>
-        <button class="btn btn-light" @click="detailRedirect()">{{textButton}}</button>
+        <button class="btn btn-light" v-if="showDetails" @click="this.$router.push(`/${redirectUrl}?id=${this.$props.id}`)">{{textButton}}</button>
     </div>
 </div>
 </div>
@@ -69,7 +69,9 @@ export default {
     category: { type: String, default:"category" },
     textButton: { type: String, default:"Detalhes" },
     showHeart: { type: Boolean, default: true},
+    showDetails: { type: Boolean, default: true},
     color: { type: String, default: 'rgb(13, 77, 156)' },
+    redirectUrl: { type: String, default: 'course-details' },
     id: Number
   },
   emits: ['like'],
@@ -78,11 +80,6 @@ export default {
       likeCourse : false
     }
 	},
-    methods: {
-      detailRedirect() {
-        this.$router.push(`/courses?id=${this.$props.id}`)
-      }
-    },
   computed: {
     style() {
       return 'border-color: ' + this.color;

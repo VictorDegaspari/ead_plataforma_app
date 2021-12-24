@@ -9,7 +9,7 @@
             <div class="right">
                 <h1>Categorias Recomendadas</h1>
                 <div class="m--5 categories" v-for="course in courses" :key="course.id">
-                    <Card :showHeart="false" :id="course.id" :title="course.title" :description="course.description"/>
+                    <Card :showDetails="false" :showHeart="false" :id="course.id" :title="course.title" :description="course.description"/>
                 </div>
                 <a @click="this.$router.push('/categories')">Ver mais</a>
             </div>

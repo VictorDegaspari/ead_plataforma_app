@@ -8,8 +8,8 @@
             </div>
             <div class="right">
                 <h1>Categorias Recomendadas</h1>
-                <div class="m--5 categories" v-for="course in courses" :key="course.id">
-                    <Card :showDetails="false" :showHeart="false" :id="course.id" :title="course.title" :description="course.description"/>
+                <div class="m--5 categories" v-for="category in categories" :key="category.id">
+                    <Card :showDetails="false" :showHeart="false" :id="category.id" :title="category.name"  :category="category.name" :description="category.description" :color="category.color"/>
                 </div>
                 <a @click="this.$router.push('/categories')">Ver mais</a>
             </div>
@@ -48,6 +48,7 @@
 <script>
 import Carousel from '../../components/Carousel.vue'
 import Card from '../../components/Card.vue';
+import api from '../../api.js';
 
 export default {
     components: {
@@ -61,19 +62,17 @@ export default {
             Health: require('@/assets/icons/health-point.svg'),
             Categories: require('@/assets/categories.svg'),
             Support: require('@/assets/icons/support.svg'),
-            // EXEMPLO
-            courses: [
-              { id: 1, title: "CATEGORIA", description:"Descrição" },
-              { id: 3, title: "CATEGORIA2", description:"Descrição" },
-              { id: 4 , title: "CATEGORIA3", description:"Descrição"},
-              { id: 5 , title: "CATEGORIA4", description:"Descrição"},
-              { id: 6, title: "CATEGORIA5", description:"Descrição" },
-              { id: 7 , title: "CATEGORIA6", description:"Descrição"},
-              { id: 8, title: "CATEGORIA7", description:"Descrição" },
-              { id: 9 , title: "CATEGORIA8", description:"Descrição"},
-              { id: 10 , title: "CATEGORIA9", description:"Descrição"},
-            ]
+            categories: []
         }
+    },
+    methods : {
+        async recommended() {
+            const recommendedCategories = await api.get(`api/recommended`);
+            this.categories = recommendedCategories.data.data;
+        }
+    },
+    mounted() {
+        this.recommended();
     }
 }
 </script>

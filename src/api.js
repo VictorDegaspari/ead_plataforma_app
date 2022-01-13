@@ -3,7 +3,7 @@ import axios from "axios";
 const api = axios.create({
   baseURL: `${process.env.VUE_APP_API_URL}/`
 })
-let token = localStorage.token;
+let token = localStorage.getItem('token');
 
 api.interceptors.request.use(
   function (config) {

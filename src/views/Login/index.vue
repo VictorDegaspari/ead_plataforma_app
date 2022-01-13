@@ -38,6 +38,7 @@ export default {
         localStorage.token = user.data.data.token;
         localStorage.user = user.data.data;
         localStorage.setItem('user', JSON.stringify(user.data.data));
+        localStorage.setItem('token', user.data.data.token );
         this.$router.push('/home')
         this.$toast.open({ message: 'Login realizado com sucesso!', type: 'success' })
         

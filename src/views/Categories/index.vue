@@ -66,13 +66,18 @@
       <div class="d-flex w-100">
         <button style="background:#F50057; color: white" @click="showCreate = false" class="btn w-50">CANCELAR</button>
         <button :disabled="loading" style="background:#00BFA6; color: white" class="btn w-50" @click.prevent="newCategory()">
-            <Spinner v-if="loading"/> 
+            <Spinner width="30px" height="30px" v-if="loading"/> 
             <div v-else>CRIAR</div>
         </button>
       </div>
     </div>
     <img class="background" :src="moon" alt="cadastroCursos" v-if="!showCreate && categories.length > 0" height="1000">
     <img class="background" :src="course" alt="cadastroCurso" v-if="showCreate">
+    
+    <div class="loading" v-show="loading">
+      <Spinner width="100px" height="100px"/> 
+    </div>
+
   </div>
 </template>
 
@@ -276,5 +281,16 @@ export default defineComponent( {
     width: 100%;
     left: 0;
     top: 0;
+  }
+  .loading {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    bottom: 0;
+    left: 0;
+    top: 0;
+    right: 0;
+    background: #15151567;
   }
 </style>

@@ -13,7 +13,7 @@
       </div>
       <div class="d-grid gap-2 col-6 mx-auto">
         <button :disabled="loading" class="btn btn-primary" @click="login()">
-          <Spinner v-if="loading"/> 
+          <Spinner width="30px" height="30px" v-if="loading"/> 
           <div v-else>Entrar</div>
         </button>
         <a class="redirect" @click="this.$router.push('/register')">Não possui conta? Registre-se agora!</a>

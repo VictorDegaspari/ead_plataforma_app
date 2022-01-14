@@ -50,7 +50,7 @@
             </div>
             <div class="d-grid gap-2 col-6 mx-auto">
                 <button :disabled="loading" :class = "[ this.password == this.c_password && this.password != '' ? 'btn btn-success' : 'btn btn-danger']" @click="register"> 
-                    <Spinner v-if="loading"/> 
+                    <Spinner width="30px" height="30px" v-if="loading"/> 
                     <div v-else>Criar conta!</div>
                 </button>
                 <a class="redirect"  @click="this.$router.push('/')">Possui conta? Faça o login!</a>

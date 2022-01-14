@@ -1,10 +1,13 @@
 <template>
-<div class="loader"></div>
+<div class="loader" :style="`width:${width};height:${height}`"></div>
 </template>
 
 <script>
 export default {
-
+    props: {
+        width: String,
+        height: String,
+    }
 }
 </script>
 
@@ -13,8 +16,6 @@ export default {
 .loader:after {
     margin: 0px 0;
     border-radius: 50%;
-    width:  30px;
-    height: 30px;
 }
 .loader {
     margin: 0px auto;

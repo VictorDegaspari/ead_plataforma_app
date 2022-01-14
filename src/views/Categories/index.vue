@@ -23,13 +23,29 @@
 
       <h3 class="titles">Título</h3>
       <div class="form-floating mb-3 w-100">
-        <input type="text" class="form-control" id="floatingInput" v-model="title" placeholder="Title">
+        <input 
+          type="text" 
+          class="form-control" 
+          :class="{ 'error': titleError }"
+          @change="titleError = false"
+          id="floatingInput" 
+          v-model="title" 
+          placeholder="Title"
+        >
         <label for="floatingInput">Título do curso:</label>
       </div>
 
       <h3 class="titles">Descrição</h3>
       <div class="form-floating mb-3 w-100">
-        <input type="text" class="form-control" id="description" v-model="description" placeholder="Description">
+        <input 
+          type="text" 
+          class="form-control" 
+          :class="{ 'error': descriptionError }" 
+          id="description" 
+          v-model="description" 
+          placeholder="Description"
+          @change="descriptionError = false"
+        >
         <label for="description">Descrição do curso:</label>
       </div>
 
@@ -41,7 +57,10 @@
 
       <div class="d-flex w-100">
         <button style="background:#F50057; color: white" @click="showCreate = false" class="btn w-50">CANCELAR</button>
-        <button style="background:#00BFA6; color: white" class="btn w-50">CRIAR</button>
+        <button style="background:#00BFA6; color: white" class="btn w-50" @click.prevent="newCategory()">
+            <Spinner v-if="loading"/> 
+            <div v-else>CRIAR</div>
+        </button>
       </div>
     </div>
     <img class="background" :src="moon" alt="cadastroCursos" v-if="!showCreate && categories.length > 0" height="1000">
@@ -52,10 +71,13 @@
 <script>
 import { defineComponent } from 'vue';
 import Card from '../../components/Card.vue';
+import Spinner from '../../components/Spinner.vue';
+import api from '../../api.js';
 
 export default defineComponent( {
   components: {
-    Card
+    Card,
+    Spinner
   },
 
   data() {
@@ -64,19 +86,13 @@ export default defineComponent( {
       empty: require('@/assets/empty.svg'),
       course: require('@/assets/createCourse.svg'),
       moon: require('@/assets/moon.svg'),
-      color: '',
-      categories: [
-        { id: 1, title: "Curso1", description:"Descrição", color: "#20C997" },
-        { id: 3, title: "Curso2", description:"Descrição", color: "red" },
-        { id: 4 , title: "Curso3", description:"Descrição", color: "green"},
-        { id: 5 , title: "Curso4", description:"Descrição", color: "#D63384"},
-        { id: 6, title: "Curso5", description:"Descrição", color: "#0DCAF0" },
-        { id: 7 , title: "Curso6", description:"Descrição", color: "#E8AB55"},
-        { id: 8, title: "Curso7", description:"Descrição", color: "purple" },
-        { id: 9 , title: "Curso8", description:"Descrição", color: "red"},
-        { id: 10 , title: "Curso9", description:"Descrição", color: "#6F42C1"},
-      ],
-      
+      color: '#000000',
+      title: '',
+      description: '',
+      categories: [],
+      descriptionError: false,
+      titleError: false,
+      loading: false
     };
   },
 
@@ -84,6 +100,42 @@ export default defineComponent( {
     updateEditorColor(object, property, e) {
       this.color = e.target.value;
     },
+    async newCategory() {
+      try {
+        this.loading = true;
+        let categoryPayload = {
+          name: this.title,
+          description: this.description,
+          color: this.color
+        };
+
+        if (!categoryPayload.name || !categoryPayload.description) {
+
+          if (!categoryPayload.name) this.titleError = true;
+          if (!categoryPayload.description) this.descriptionError = true;
+
+          this.$toast.open({ message: 'Preencha todos os campos', type: 'error' })
+          this.loading = false;
+          return;
+        }
+  
+        await api.post('api/categories', categoryPayload).then(() => {
+          this.$toast.open({ message: 'categoria criada com sucesso!', type: 'success' })
+          this.description = '';
+          this.title = '';
+          this.loading = false;
+        });
+        
+        
+      } catch (error) {
+        this.$toast.open({ message: 'erro ao criar categoria', type: 'error' })
+
+        console.error(error);
+      }
+    }
+  },
+  mounted() {
+    
   }
 } );
 </script>
@@ -161,7 +213,9 @@ export default defineComponent( {
     z-index: -1;
     width: 100%;
   }
-
+  .error {
+    border-bottom-color: #ff4949;
+  }
   .categories-list {
     display: flex;
     flex-flow: wrap;

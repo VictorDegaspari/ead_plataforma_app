@@ -1,21 +1,21 @@
 <template>
 <div class="pagination">
-    <button class="btn active" @click.prevent="getPage(firstPageUrl)">Primeira página</button>
+    <button class="btn active" :disabled="!previousPageUrl" @click.prevent="emitPath(firstPageUrl)">Primeira página</button>
     <div v-for="link in links" :key="link.id">
         <button 
             class="btn not-active" 
-            @click.prevent="getPage(link.url)"
+            @click.prevent="emitPath(link.url)"
             :class="{ 'active' : link.active }"
+            :disabled="!link.url"
         >
             <span v-html="link.label"></span>
         </button>
     </div>
-    <button class="btn active" @click.prevent="getPage(lastPageUrl)">Última página</button>
+    <button class="btn active"  :disabled="!nextPageUrl" @click.prevent="emitPath(lastPageUrl)">Última página</button>
 </div>
 </template>
 
 <script>
-import api from '../api.js';
 
 export default {
     props: {
@@ -40,8 +40,8 @@ export default {
         }
     },
     methods: {
-        async getPage(link){
-            await api.post(link)
+        emitPath(link){
+            this.$emit('categoryEmit', link);
         }
     },
     mounted() {
@@ -65,12 +65,12 @@ export default {
         bottom: 10px;
     }
     .active {
-        background: rgba(98, 0, 255, 0.76) !important;
+        background: #151515 !important;
         color: #ffff !important;
 
     }
     .not-active {
-        background: rgba(255, 255, 255, 0.274);
+        background: #ffff;
         color: #151515;
     }
 </style>

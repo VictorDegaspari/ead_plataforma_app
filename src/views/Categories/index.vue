@@ -9,7 +9,14 @@
       <div style="margin:5px;" v-for="category in categories" :key="category.id">
         <Card :showHeart="false" :showDetails="false" :id="category.id" :title="category.name" :description="category.description" category="categoria" :color="category.color"/>
       </div>
-      <Pagination :links="paginationLinks" class="pagination" :lastPageUrl="paginationLastPage" :firstPageUrl="paginationFirstPage"/> 
+      <Pagination 
+        :links="paginationLinks" 
+        :lastPageUrl="paginationLastPage" 
+        :firstPageUrl="paginationFirstPage"
+        :previousPageUrl="paginationPreviousPage"
+        :nextPageUrl="paginationNextPage"
+        @categoryEmit="categoryEmit($event)"
+      /> 
 
       <div id="courses">
         <div class="d-flex" style="flex-direction:column; align-items:center" v-if="categories?.length === 0">
@@ -98,7 +105,9 @@ export default defineComponent( {
       loading: false,
       paginationLinks: [],
       paginationLastPage: '',
-      paginationFirstPage: ''
+      paginationFirstPage: '',
+      paginationNextPage: '',
+      paginationPreviousPage: ''
     };
   },
 
@@ -141,15 +150,17 @@ export default defineComponent( {
       }
     },
 
-    async showCategories() {
+    async showCategories(page = 'api/categories?page=1') {
 
       try {
         this.loading = true;
-        await api.get('api/categories').then(resp => {
+        await api.get(page).then(resp => {
           this.categories = resp.data.data.data
           this.paginationLinks = resp.data.data.links;
           this.paginationFirstPage = resp.data.data.first_page_url;
           this.paginationLastPage = resp.data.data.last_page_url;
+          this.paginationPreviousPage = resp.data.data.prev_page_url;
+          this.paginationNextPage = resp.data.data.next_page_url;
           this.loading = false;
         });
         
@@ -158,6 +169,11 @@ export default defineComponent( {
         this.loading = false;
         console.error(error);
       }
+    },
+
+    categoryEmit($value) {
+      console.log('chegou')
+      this.showCategories($value);
     }
   },
   mounted() {

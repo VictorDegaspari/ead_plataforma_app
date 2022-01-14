@@ -7,8 +7,9 @@
 
     <div class="w-100 categories-list" v-if="!showCreate">
       <div style="margin:5px;" v-for="category in categories" :key="category.id">
-        <Card :showDetails="false" :id="category.id" :title="category.title" :description="category.description" category="categoria" :color="category.color"/>
+        <Card :showHeart="false" :showDetails="false" :id="category.id" :title="category.name" :description="category.description" category="categoria" :color="category.color"/>
       </div>
+      <Pagination :links="paginationLinks" class="pagination" :lastPageUrl="paginationLastPage" :firstPageUrl="paginationFirstPage"/> 
 
       <div id="courses">
         <div class="d-flex" style="flex-direction:column; align-items:center" v-if="categories?.length === 0">
@@ -57,7 +58,7 @@
 
       <div class="d-flex w-100">
         <button style="background:#F50057; color: white" @click="showCreate = false" class="btn w-50">CANCELAR</button>
-        <button style="background:#00BFA6; color: white" class="btn w-50" @click.prevent="newCategory()">
+        <button :disabled="loading" style="background:#00BFA6; color: white" class="btn w-50" @click.prevent="newCategory()">
             <Spinner v-if="loading"/> 
             <div v-else>CRIAR</div>
         </button>
@@ -72,12 +73,14 @@
 import { defineComponent } from 'vue';
 import Card from '../../components/Card.vue';
 import Spinner from '../../components/Spinner.vue';
+import Pagination from '../../components/Pagination.vue';
 import api from '../../api.js';
 
 export default defineComponent( {
   components: {
     Card,
-    Spinner
+    Spinner,
+    Pagination
   },
 
   data() {
@@ -92,7 +95,10 @@ export default defineComponent( {
       categories: [],
       descriptionError: false,
       titleError: false,
-      loading: false
+      loading: false,
+      paginationLinks: [],
+      paginationLastPage: '',
+      paginationFirstPage: ''
     };
   },
 
@@ -100,7 +106,9 @@ export default defineComponent( {
     updateEditorColor(object, property, e) {
       this.color = e.target.value;
     },
+
     async newCategory() {
+
       try {
         this.loading = true;
         let categoryPayload = {
@@ -126,16 +134,34 @@ export default defineComponent( {
           this.loading = false;
         });
         
-        
       } catch (error) {
         this.$toast.open({ message: 'erro ao criar categoria', type: 'error' })
+        this.loading = false;
+        console.error(error);
+      }
+    },
 
+    async showCategories() {
+
+      try {
+        this.loading = true;
+        await api.get('api/categories').then(resp => {
+          this.categories = resp.data.data.data
+          this.paginationLinks = resp.data.data.links;
+          this.paginationFirstPage = resp.data.data.first_page_url;
+          this.paginationLastPage = resp.data.data.last_page_url;
+          this.loading = false;
+        });
+        
+      } catch (error) {
+        this.$toast.open({ message: 'erro ao carregar categorias', type: 'error' })
+        this.loading = false;
         console.error(error);
       }
     }
   },
   mounted() {
-    
+    this.showCategories();
   }
 } );
 </script>

@@ -5,6 +5,11 @@ const api = axios.create({
 })
 let token = localStorage.getItem('token');
 
+window.addEventListener('updateToken', (event) => {
+  token = event.detail?.token;
+  localStorage.setItem('token', token);
+});
+
 api.interceptors.request.use(
   function (config) {
     

@@ -76,7 +76,6 @@ export default {
     this.user = JSON.parse(localStorage.getItem('user'));
     window.addEventListener('updateName', (event) => {
       this.user.name = event.detail?.name;
-      console.log(event)
     });
   }
 

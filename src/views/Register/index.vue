@@ -49,8 +49,9 @@
                 >
             </div>
             <div class="d-grid gap-2 col-6 mx-auto">
-                <button :class = "[ this.password == this.c_password && this.password != '' ? 'btn btn-success' : 'btn btn-danger']" @click="register"> 
-                    Criar conta! 
+                <button :disabled="loading" :class = "[ this.password == this.c_password && this.password != '' ? 'btn btn-success' : 'btn btn-danger']" @click="register"> 
+                    <Spinner v-if="loading"/> 
+                    <div v-else>Criar conta!</div>
                 </button>
                 <a class="redirect"  @click="this.$router.push('/')">Possui conta? Faça o login!</a>
 
@@ -62,15 +63,20 @@
 
 <script>
 import api from '../../api.js';
+import Spinner from '../../components/Spinner.vue';
 
 export default {
+    components: {
+        Spinner
+    },
     data() {
         return {
-        Welcome: require('@/assets/register.svg'),
-        name: '',
-        email: '',
-        password: '',
-        c_password: ''
+            Welcome: require('@/assets/register.svg'),
+            name: '',
+            email: '',
+            password: '',
+            c_password: '',
+            loading: false
         }
     },
 
@@ -85,12 +91,22 @@ export default {
                 ){
                     return this.$toast.open({ message: 'Preencha todos o campos', type: 'error' });
                 }
+                this.loading = true;
                 const user = await api.post('api/register', {name: this.name, email: this.email, password: this.password, c_password: this.c_password});
                 localStorage.token = user.data.data.token;
+                localStorage.user = user.data.data;
+                localStorage.setItem('user', JSON.stringify(user.data.data));
+                window.dispatchEvent(new CustomEvent('updateToken', {
+                    detail: {
+                        token: user.data.data.token
+                    }})
+                );
                 this.$router.push('/home');
+                this.loading = false;
                 this.$toast.open({ message: 'Conta criada com sucesso!', type: 'success' })
                 
             } catch (error) {
+                this.loading = false;
                 this.$toast.open({ message: 'E-mail ou senha inválidos. Por favor insira um válido.', type: 'error' });
                 console.error(error);
             }

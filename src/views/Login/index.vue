@@ -12,7 +12,10 @@
         <input class="form-control" type="password" id="password" v-model="password"/>
       </div>
       <div class="d-grid gap-2 col-6 mx-auto">
-        <button class="btn btn-primary" @click="login()">Entrar</button>
+        <button :disabled="loading" class="btn btn-primary" @click="login()">
+          <Spinner v-if="loading"/> 
+          <div v-else>Entrar</div>
+        </button>
         <a class="redirect" @click="this.$router.push('/register')">Não possui conta? Registre-se agora!</a>
       </div>
     </div>
@@ -22,27 +25,40 @@
 
 <script>
 import api from '../../api.js';
+import Spinner from '../../components/Spinner.vue';
+
 export default {
+  components: {
+    Spinner
+  },
   data() {
     return {
       Welcome: require('@/assets/register.svg'),
       email: null,
-      password: null
+      password: null,
+      loading: false
     }
   },
   methods:{
 
     async login() {
       try {
+        this.loading = true;
         const user = await api.post('api/login', {email: this.email, password: this.password});
         localStorage.token = user.data.data.token;
-        localStorage.user = user.data.data;
+        localStorage.user = await user.data.data;
         localStorage.setItem('user', JSON.stringify(user.data.data));
-        localStorage.setItem('token', user.data.data.token );
+        window.dispatchEvent(new CustomEvent('updateToken', {
+          detail: {
+            token: user.data.data.token
+          }})
+        );
         this.$router.push('/home')
+        this.loading = false;
         this.$toast.open({ message: 'Login realizado com sucesso!', type: 'success' })
         
       } catch (error) {
+        this.loading = false;
         this.$toast.open({ message: 'E-mail ou senha inválidos. Por favor insira um válido.', type: 'error' })
         console.error(error)
       }

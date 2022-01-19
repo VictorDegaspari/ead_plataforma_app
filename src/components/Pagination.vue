@@ -41,7 +41,7 @@ export default {
     },
     methods: {
         emitPath(link){
-            this.$emit('categoryEmit', link);
+            this.$emit('pageChanged', link);
         }
     },
     mounted() {

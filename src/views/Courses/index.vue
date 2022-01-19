@@ -75,6 +75,14 @@
     </div>
     <img class="background" :src="moon" alt="cadastroCursos" v-if="!showCreate" height="1000">
     <img class="background" :src="course" alt="cadastroCurso" v-if="showCreate">
+    <Pagination 
+      :links="paginationLinks" 
+      :lastPageUrl="paginationLastPage" 
+      :firstPageUrl="paginationFirstPage"
+      :previousPageUrl="paginationPreviousPage"
+      :nextPageUrl="paginationNextPage"
+      @pageChanged="pageChanged($event)"
+    /> 
   </div>
 </template>
 
@@ -82,6 +90,7 @@
 import { defineComponent } from 'vue';
 
 import Card from '../../components/Card.vue';
+import Pagination from '../../components/Pagination.vue';
 import api from '../../api.js';
 import { Splide, SplideSlide } from '@splidejs/vue-splide';
 
@@ -89,7 +98,8 @@ export default defineComponent( {
   components: {
     Card,    
     Splide,
-    SplideSlide
+    SplideSlide,
+    Pagination
   },
   
   data() {
@@ -115,7 +125,12 @@ export default defineComponent( {
       showCreate: null,
       loading: false,
       error: false,
-      user: {}
+      user: {},
+      paginationLinks: [],
+      paginationLastPage: '',
+      paginationFirstPage: '',
+      paginationNextPage: '',
+      paginationPreviousPage: ''
     }
   },
   methods:{
@@ -128,15 +143,13 @@ export default defineComponent( {
     },
 
     async like(data) {
+
       try {
-        // data['liked'] 
-        //   ? 
-          api.post('api/attachCourse', { courseId: data['id'] }) 
-          // :
-          // api.post('api/detachCourse', { courseId: data['id'] })
+        api.post('api/attachCourse', { courseId: data['id'] }) 
       } catch (error) {
         console.error(error);
       }
+
     },
 
     async newCourse() {
@@ -179,13 +192,23 @@ export default defineComponent( {
       }
     },
 
-    async coursesResource() {
+    async coursesResource(page = 'api/courses?page=1') {
 
       try {
 
-        const courses = await api.get('api/courses');
+        await api.get(page).then(resp => {
+
+          let response = resp.data.data;
+
+          this.courses = response.data
+          this.paginationLinks = response.links;
+          this.paginationFirstPage = response.first_page_url;
+          this.paginationLastPage = response.last_page_url;
+          this.paginationPreviousPage = response.prev_page_url;
+          this.paginationNextPage = response.next_page_url;
+          this.loading = false;
+        });
         const categories = await api.get('api/categories');
-        this.courses = courses.data.data.data;
         this.categories = categories.data.data.data;
 
       } catch (error) {
@@ -210,6 +233,10 @@ export default defineComponent( {
 
       }
     },
+
+    pageChanged($value) {
+      this.coursesResource($value);
+    }
   },
   mounted() {
     this.loggedUser();

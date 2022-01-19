@@ -23,7 +23,7 @@
         :firstPageUrl="paginationFirstPage"
         :previousPageUrl="paginationPreviousPage"
         :nextPageUrl="paginationNextPage"
-        @categoryEmit="categoryEmit($event)"
+        @pageChanged="pageChanged($event)"
       /> 
 
       <div id="courses">
@@ -187,7 +187,7 @@ export default defineComponent( {
       }
     },
 
-    categoryEmit($value) {
+    pageChanged($value) {
       this.showCategories($value);
     }
   },

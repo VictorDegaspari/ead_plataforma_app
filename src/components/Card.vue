@@ -9,9 +9,9 @@
     <div class="flex">
         <div class="main-content">
             <div>
-                <input type="checkbox" class="checkbox" :id="id"/>
+                <input type="checkbox" class="checkbox" :id="id" :checked="liked"/>
                 <label :for="id">
-                <svg class="heart-svg" viewBox="467 392 58 57" xmlns="http://www.w3.org/2000/svg"  v-if="showHeart">
+                <svg class="heart-svg" viewBox="467 392 58 57" xmlns="http://www.w3.org/2000/svg"  v-if="showHeart" @click="$emit('like', {id: id, liked: liked })">
                     <g class="Group" fill="none" fill-rule="evenodd" transform="translate(467 392)">
                     <path d="M29.144 20.773c-.063-.13-4.227-8.67-11.44-2.59C7.63 28.795 28.94 43.256 29.143 43.394c.204-.138 21.513-14.6 11.44-25.213-7.214-6.08-11.377 2.46-11.44 2.59z" class="heart" fill="#AAB8C2"/>
                     <circle class="main-circ" fill="#E2264D" opacity="0" cx="29.5" cy="29.5" r="1.5"/>
@@ -72,12 +72,12 @@ export default {
     showDetails: { type: Boolean, default: true},
     color: { type: String, default: 'rgb(13, 77, 156)' },
     redirectUrl: { type: String, default: 'course-details' },
-    id: Number
+    id: Number,
+    liked: Boolean
   },
   emits: ['like'],
   data() {
-    return{
-      likeCourse : false
+    return {
     }
 	},
   computed: {

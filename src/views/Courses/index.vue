@@ -7,19 +7,33 @@
     </header>
 
 
-    <div id="courses" v-if="!showCreate">
-      <div class="d-flex" style="flex-direction:column; align-items:center" v-if="courses?.length === 0">
+    <div style="padding:20px" id="courses" v-if="!showCreate">
+      <div class="d-flex" style="width:100%; flex-direction:column; align-items:center" v-if="courses?.length === 0">
         <h2>Nenhum curso cadastrado ;(</h2>
         <img :src="empty" alt="empty" width="300">
       </div>
-      <Splide style="margin-top:10px;" :options="options"  v-for="course in courses" :key="course.id">
+
+      <div 
+        style="display:flex; flex-direction:column; justify-content:center; align-items:center" 
+      >
+        <h1 style="color:#ffff"> Nome da categoria aqui </h1>
+        <Splide :options="options" style="margin-top:10px">
           <SplideSlide  v-for="course in courses" :key="course.id">
-              <Card :id="course.id" :title="course.title" :description="course.description" :category="course.category.title" :color="course.category.color"/>
+            <Card 
+              :id="course.id" 
+              :title="course.name" 
+              :description="course.detail" 
+              :category="course?.categories[0]?.name" 
+              :color="course?.categories[0]?.color"
+              :showHeart="!course.users[0]?.pivot.admin ? true : false"
+              :liked="course.users.length > 0 == user.id ? true : false"
+              @like="like($event)"
+            />
           </SplideSlide>
-      </Splide>
+        </Splide>
+      </div>
 
     </div>
-    
 
     <div class="create d-flex" v-if="showCreate">
       <h1 style="text-align:center;" class="titles m-3">CADASTRO DE CURSO</h1>
@@ -42,9 +56,9 @@
       </div>
 
       <h3 class="titles">Categoria</h3>
-      <select class="w-100">
-        <option v-for="category in categories" :value="item" :key="category.id">
-          {{ category.title }}
+      <select class="w-100" v-model="categoryId">
+        <option v-for="category in categories" :value="category.id" :key="category.id">
+          {{ category.name }}
         </option>
       </select>
       <!-- <a href=""><small>Cadastrar nova categoria</small></a> -->
@@ -56,7 +70,7 @@
 
       <div class="d-flex w-100">
         <button style="background:#F50057; color: white" @click="showCreate = false" class="btn w-50">CANCELAR</button>
-        <button style="background:#00BFA6; color: white" class="btn w-50">CRIAR</button>
+        <button style="background:#00BFA6; color: white" class="btn w-50" @click.prevent="newCourse()">CRIAR</button>
       </div>
     </div>
     <img class="background" :src="moon" alt="cadastroCursos" v-if="!showCreate" height="1000">
@@ -78,10 +92,10 @@ export default defineComponent( {
     SplideSlide
   },
   
-  data(){
+  data() {
     const options = {
       rewind        : true,
-      perPage       : 5,
+      perPage       : 4,
       perMove       : 1,
     };
     return {
@@ -89,44 +103,117 @@ export default defineComponent( {
       empty: require('@/assets/empty.svg'),
       course: require('@/assets/createCourse.svg'),
       moon: require('@/assets/moon.svg'),
+
       time: null,
       title: null,
       description: null,
       url: null,
-      category: null,
-      // EXEMPLO
-      courses: [
-        { id: 1, title: "Curso1", description:"Descrição", category: { id: 1, title: "Medicina", description:"Descrição", color: "#0D6EFD" } },
-        { id: 3, title: "Curso2", description:"Descrição", category: { id: 2, title: "Psicologia", description:"Descrição", color: "#0D6EFD" } },
-        { id: 4 , title: "Curso3", description:"Descrição", category: { id: 3, title: "Saúde mental", description:"Descrição", color: "#DC3545" } },
-        { id: 5 , title: "Curso4", description:"Descrição", category: { id: 4, title: "Farmácia", description:"Descrição", color: "#DC3545" } },
-        { id: 6, title: "Curso5", description:"Descrição", category: { id: 5, title: "Farmácia", description:"Descrição", color: "red" } },
-        { id: 7 , title: "Curso6", description:"Descrição", category: { id: 6, title: "Farmácia", description:"Descrição", color: "red" } },
-      ],
-      showCreate: null
+      categoryId: null,
+
+      courses: [],
+      categories: [],
+      showCreate: null,
+      loading: false,
+      error: false,
+      user: {}
     }
   },
   methods:{
     showOption(course) {
       let id = parseInt(this.$route.query.id);
       if (id && id !== course) {
-        return false
+        return false;
       }
-      return true
+      return true;
     },
-    async coursesResource() {
+
+    async like(data) {
       try {
-       const courses = await api.get('api/courses');
-       console.log(courses)
+        // data['liked'] 
+        //   ? 
+          api.post('api/attachCourse', { courseId: data['id'] }) 
+          // :
+          // api.post('api/detachCourse', { courseId: data['id'] })
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
+    async newCourse() {
+
+      try {
+        this.loading = true;
+        let cursePayload = {
+          name: this.title,
+          detail: this.description,
+          categoryId: this.categoryId,
+          url: this.url,
+          time: this.time,
+          users_id: this.user.id
+        };
+
+        if (!cursePayload.name || !cursePayload.detail || !cursePayload.time || !cursePayload.categoryId || !cursePayload.url) {
+
+          if (!cursePayload.name) this.error = true;
+          if (!cursePayload.detail) this.error = true;
+          if (!cursePayload.categoryId) this.error = true;
+
+          this.$toast.open({ message: 'Preencha todos os campos', type: 'error' })
+          this.loading = false;
+          return;
+        }
+  
+        await api.post('api/courses', cursePayload).then(() => {
+          this.$toast.open({ message: 'curso criado com sucesso!', type: 'success' })
+          this.description = '';
+          this.title = '';
+          this.time = '';
+          this.loading = false;
+          this.error = false;
+        });
         
       } catch (error) {
-        console.error(error)
+        this.$toast.open({ message: 'erro ao criar curso', type: 'error' })
+        this.loading = false;
+        console.error(error);
+      }
+    },
+
+    async coursesResource() {
+
+      try {
+
+        const courses = await api.get('api/courses');
+        const categories = await api.get('api/categories');
+        this.courses = courses.data.data.data;
+        this.categories = categories.data.data.data;
+
+      } catch (error) {
+
+        this.$toast.open({ message: 'erro ao carregar cursos', type: 'error' });
+        console.error(error);
+
+      }
+    },
+
+    async loggedUser() {
+
+      try {
+
+        const user = await api.get('api/loggedUser');
+        this.user = user.data.data;
+
+      } catch (error) {
+
+        this.$toast.open({ message: 'erro ao carregar usuário', type: 'error' });
+        console.error(error);
+
       }
     },
   },
-  created() {
-    this.coursesResource()
-
+  mounted() {
+    this.loggedUser();
+    this.coursesResource();
   },
 
 })

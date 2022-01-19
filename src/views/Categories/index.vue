@@ -7,7 +7,15 @@
 
     <div class="w-100 categories-list" v-if="!showCreate">
       <div style="margin:5px;" v-for="category in categories" :key="category.id">
-        <Card :showHeart="false" :showDetails="false" :id="category.id" :title="category.name" :description="category.description" category="categoria" :color="category.color"/>
+        <Card 
+          :showHeart="false" 
+          :showDetails="false" 
+          :id="category.id" 
+          :title="category.name" 
+          :description="category.description" 
+          category="categoria" 
+          :color="category.color"
+        />
       </div>
       <Pagination 
         :links="paginationLinks" 
@@ -160,12 +168,15 @@ export default defineComponent( {
       try {
         this.loading = true;
         await api.get(page).then(resp => {
-          this.categories = resp.data.data.data
-          this.paginationLinks = resp.data.data.links;
-          this.paginationFirstPage = resp.data.data.first_page_url;
-          this.paginationLastPage = resp.data.data.last_page_url;
-          this.paginationPreviousPage = resp.data.data.prev_page_url;
-          this.paginationNextPage = resp.data.data.next_page_url;
+
+          let response = resp.data.data;
+
+          this.categories = response.data
+          this.paginationLinks = response.links;
+          this.paginationFirstPage = response.first_page_url;
+          this.paginationLastPage = response.last_page_url;
+          this.paginationPreviousPage = response.prev_page_url;
+          this.paginationNextPage = response.next_page_url;
           this.loading = false;
         });
         
@@ -177,7 +188,6 @@ export default defineComponent( {
     },
 
     categoryEmit($value) {
-      console.log('chegou')
       this.showCategories($value);
     }
   },

@@ -18,7 +18,8 @@
         v-for="course in courses" :key="course.id"
       >
             <Card 
-              style="margin:5px"
+              style="margin:5px; height:505px"
+              class="scroll"
               textButton="Assistir"
               :id="course.id" 
               :title="course.name" 
@@ -335,5 +336,35 @@ export default defineComponent( {
     top: 0;
     right: 0;
     background: #15151567;
+  }
+  .scroll {
+    h5 {
+      max-height: 93px;
+      overflow-y: auto;
+      &::-webkit-scrollbar-track
+      {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        background-color: #F5F5F5;
+        border-radius: 10px;
+      }
+
+      &::-webkit-scrollbar
+      {
+        width: 5px;
+        background-color: #F5F5F5;
+      }
+
+      &::-webkit-scrollbar-thumb
+      {
+        border-radius: 5px;
+        background-image: 
+          -webkit-gradient(linear,
+          left bottom,
+          left top,
+          color-stop(0.44, rgb(122,153,217)),
+          color-stop(0.72, rgb(73,125,189)),
+          color-stop(0.86, rgb(28,58,148)));
+      }
+    }
   }
 </style>

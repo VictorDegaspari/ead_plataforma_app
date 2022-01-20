@@ -10,6 +10,7 @@ import VueTheMask from 'vue-the-mask'
 import VueToast from 'vue-toast-notification'
 //import 'vue-toast-notification/dist/theme-default.css';
 import 'vue-toast-notification/dist/theme-sugar.css'
+import YouTube from 'vue3-youtube'
 // import VueYouTubeEmbed from 'vue-youtube-embed'
 import api from './api'
 import App from './App.vue'
@@ -25,8 +26,9 @@ app.use(VueToast, {
     position: 'bottom'
 });
 
-app.use(VueTheMask)
+app.use(VueTheMask);
 app.use(router);
+app.component('YouTube', YouTube);
 
 app.use( VueSplide );
 app.mount( '#app' );

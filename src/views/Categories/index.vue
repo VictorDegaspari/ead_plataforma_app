@@ -13,7 +13,8 @@
           :id="category.id" 
           :title="category.name" 
           :description="category.description" 
-          category="categoria" 
+          category="categoria"
+          :showImage="false"
           :color="category.color"
         />
       </div>

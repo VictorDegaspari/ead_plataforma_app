@@ -2,6 +2,7 @@
 <div class="card" style="width: 18rem;" :style="style">
 <!-- <img src="" class="card-img-top" alt="..."> -->
 <div class="card-body">
+    <img :src="`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`" width="250" alt="" v-if="showImage">
     <small class="category" :style="categoryStyle">{{ category }}</small>
     <h5 class="card-title">{{ title }}</h5>
     <p style="margin:5px" class="card-text">{{ description }}</p>
@@ -55,7 +56,7 @@
                 </label>
             </div>
         </div>
-        <button class="btn btn-light" v-if="showDetails" @click="this.$router.push(`/${redirectUrl}?id=${this.$props.id}`)">{{textButton}}</button>
+        <button class="btn btn-light" v-if="showDetails" @click="this.$router.push(`/${redirectUrl}?id=${this.$props.id}&url=${videoId}`)">{{textButton}}</button>
     </div>
 </div>
 </div>
@@ -70,10 +71,12 @@ export default {
     textButton: { type: String, default:"Detalhes" },
     showHeart: { type: Boolean, default: true},
     showDetails: { type: Boolean, default: true},
+    showImage: { type: Boolean, default: false},
     color: { type: String, default: 'rgb(13, 77, 156)' },
     redirectUrl: { type: String, default: 'course-details' },
     id: Number,
-    liked: Boolean
+    liked: Boolean,
+    videoId: String
   },
   emits: ['like'],
   data() {

@@ -18,7 +18,7 @@
     "vue-router": "^4.0.11",
     "vue-the-mask": "^0.11.1",
     "vue-toast-notification": "^2.0.1",
-    "vue-youtube-embed": "^2.2.2"
+    "vue3-youtube": "^0.1.9"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

@@ -14,12 +14,12 @@
       </div>
 
       <div 
-        style="display:flex; flex-direction:column; justify-content:center; align-items:center" 
+        style="display:flex; flex-direction:column; justify-content:center; align-items:center"
+        v-for="course in courses" :key="course.id"
       >
-        <h1 style="color:#ffff"> Nome da categoria aqui </h1>
-        <Splide :options="options" style="margin-top:10px">
-          <SplideSlide  v-for="course in courses" :key="course.id">
             <Card 
+              style="margin:5px"
+              textButton="Assistir"
               :id="course.id" 
               :title="course.name" 
               :description="course.detail" 
@@ -27,12 +27,19 @@
               :color="course?.categories[0]?.color"
               :showHeart="!course.users[0]?.pivot.admin ? true : false"
               :liked="course.users.length > 0 == user.id ? true : false"
+              :showImage="true"
               @like="like($event)"
+              :videoId="formatUrl(course.url)"
             />
-          </SplideSlide>
-        </Splide>
       </div>
-
+      <Pagination 
+        :links="paginationLinks" 
+        :lastPageUrl="paginationLastPage" 
+        :firstPageUrl="paginationFirstPage"
+        :previousPageUrl="paginationPreviousPage"
+        :nextPageUrl="paginationNextPage"
+        @pageChanged="pageChanged($event)"
+      /> 
     </div>
 
     <div class="create d-flex" v-if="showCreate">
@@ -64,7 +71,7 @@
       <!-- <a href=""><small>Cadastrar nova categoria</small></a> -->
       <h3 class="titles">URL</h3>
       <div class="form-floating mb-3 w-100">
-        <input type="text" id="URL" class="form-control" v-model="url" placeholder="URL do vídeo">
+        <input type="text" id="URL" class="form-control" v-model.trim="url" placeholder="URL do vídeo">
         <label for="URL">URL do vídeo:</label>
       </div>
 
@@ -75,14 +82,9 @@
     </div>
     <img class="background" :src="moon" alt="cadastroCursos" v-if="!showCreate" height="1000">
     <img class="background" :src="course" alt="cadastroCurso" v-if="showCreate">
-    <Pagination 
-      :links="paginationLinks" 
-      :lastPageUrl="paginationLastPage" 
-      :firstPageUrl="paginationFirstPage"
-      :previousPageUrl="paginationPreviousPage"
-      :nextPageUrl="paginationNextPage"
-      @pageChanged="pageChanged($event)"
-    /> 
+    <div class="loading" v-show="loading">
+      <Spinner width="100px" height="100px"/> 
+    </div>
   </div>
 </template>
 
@@ -91,25 +93,19 @@ import { defineComponent } from 'vue';
 
 import Card from '../../components/Card.vue';
 import Pagination from '../../components/Pagination.vue';
+import Spinner from '../../components/Spinner.vue';
 import api from '../../api.js';
-import { Splide, SplideSlide } from '@splidejs/vue-splide';
 
 export default defineComponent( {
   components: {
     Card,    
-    Splide,
-    SplideSlide,
-    Pagination
+    Pagination,
+    Spinner
   },
   
   data() {
-    const options = {
-      rewind        : true,
-      perPage       : 4,
-      perMove       : 1,
-    };
+
     return {
-      options,
       empty: require('@/assets/empty.svg'),
       course: require('@/assets/createCourse.svg'),
       moon: require('@/assets/moon.svg'),
@@ -195,6 +191,7 @@ export default defineComponent( {
     async coursesResource(page = 'api/courses?page=1') {
 
       try {
+        this.loading = true;
 
         await api.get(page).then(resp => {
 
@@ -212,7 +209,7 @@ export default defineComponent( {
         this.categories = categories.data.data.data;
 
       } catch (error) {
-
+        this.loading = false;
         this.$toast.open({ message: 'erro ao carregar cursos', type: 'error' });
         console.error(error);
 
@@ -236,7 +233,16 @@ export default defineComponent( {
 
     pageChanged($value) {
       this.coursesResource($value);
+    },
+
+    formatUrl(url) {
+
+      let formattedUrl = (url.match(/v=(.*$)/) || [])[1] || url;
+      formattedUrl = formattedUrl.split("&")[0];
+
+      return formattedUrl;
     }
+
   },
   mounted() {
     this.loggedUser();
@@ -318,5 +324,16 @@ export default defineComponent( {
     width: 100%;
     left: 0;
     top: 0;
+  }
+  .loading {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    bottom: 0;
+    left: 0;
+    top: 0;
+    right: 0;
+    background: #15151567;
   }
 </style>

@@ -2,7 +2,7 @@
 <div class="categories w-100">
     <header class="m-3">
       <button class="m-3 btn btn-dark" @click.prevent="showCreate = true" v-show="!showCreate">CRIAR CATEGORIA</button>
-      <button class="btn btn-dark" @click="showCreate = false" v-show="showCreate">VOLTAR</button>
+      <button class="btn btn-dark" @click="showCreate = false, showCategories()" v-show="showCreate">VOLTAR</button>
     </header>
 
     <div class="w-100 categories-list" v-if="!showCreate">
@@ -49,7 +49,7 @@
           v-model="title" 
           placeholder="Title"
         >
-        <label for="floatingInput">Título do curso:</label>
+        <label for="floatingInput">Título da categoria:</label>
       </div>
 
       <h3 class="titles">Descrição</h3>
@@ -63,7 +63,7 @@
           placeholder="Description"
           @change="descriptionError = false"
         >
-        <label for="description">Descrição do curso:</label>
+        <label for="description">Descrição da categoria:</label>
       </div>
 
       <h3 class="titles">Cor</h3>

@@ -1,64 +1,65 @@
 <template>
 <div class="card" style="width: 18rem;" :style="style">
-<!-- <img src="" class="card-img-top" alt="..."> -->
-<div class="card-body">
+  <div class="card-body">
     <img :src="`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`" width="250" alt="" v-if="showImage">
     <small class="category" :style="categoryStyle">{{ category }}</small>
     <h5 class="card-title">{{ title }}</h5>
-    <p style="margin:5px" class="card-text">{{ description }}</p>
+    <p style="margin:5px" class="card-text" v-if="showDescription">{{ description }}</p>
 
     <div class="flex">
-        <div class="main-content">
-            <div>
-                <input type="checkbox" class="checkbox" :id="id" :checked="liked"/>
-                <label :for="id">
-                <svg class="heart-svg" viewBox="467 392 58 57" xmlns="http://www.w3.org/2000/svg"  v-if="showHeart" @click="$emit('like', {id: id, liked: liked })">
-                    <g class="Group" fill="none" fill-rule="evenodd" transform="translate(467 392)">
-                    <path d="M29.144 20.773c-.063-.13-4.227-8.67-11.44-2.59C7.63 28.795 28.94 43.256 29.143 43.394c.204-.138 21.513-14.6 11.44-25.213-7.214-6.08-11.377 2.46-11.44 2.59z" class="heart" fill="#AAB8C2"/>
-                    <circle class="main-circ" fill="#E2264D" opacity="0" cx="29.5" cy="29.5" r="1.5"/>
+      <div class="main-content">
+        <div style="display:flex">
+            <img v-if="admin" :src="edit" alt="" width="30" class="edit">
+            <input v-if="showHeart && !admin" type="checkbox" class="checkbox" :id="id" :checked="liked"/>
+            <label v-if="showHeart && !admin" :for="id" style="width:65px">
+            <svg class="heart-svg" viewBox="467 392 58 57" xmlns="http://www.w3.org/2000/svg"  v-if="showHeart && !admin" @click="$emit('like', {id: id, liked: liked })">
+                <g class="Group" fill="none" fill-rule="evenodd" transform="translate(467 392)">
+                <path d="M29.144 20.773c-.063-.13-4.227-8.67-11.44-2.59C7.63 28.795 28.94 43.256 29.143 43.394c.204-.138 21.513-14.6 11.44-25.213-7.214-6.08-11.377 2.46-11.44 2.59z" class="heart" fill="#AAB8C2"/>
+                <circle class="main-circ" fill="#E2264D" opacity="0" cx="29.5" cy="29.5" r="1.5"/>
 
-                    <g class="grp7" opacity="0" transform="translate(7 6)">
-                        <circle class="oval1" fill="#9CD8C3" cx="2" cy="6" r="2"/>
-                        <circle class="oval2" fill="#8CE8C3" cx="5" cy="2" r="2"/>
-                    </g>
+                <g class="grp7" opacity="0" transform="translate(7 6)">
+                    <circle class="oval1" fill="#9CD8C3" cx="2" cy="6" r="2"/>
+                    <circle class="oval2" fill="#8CE8C3" cx="5" cy="2" r="2"/>
+                </g>
 
-                    <g class="grp6" opacity="0" transform="translate(0 28)">
-                        <circle class="oval1" fill="#CC8EF5" cx="2" cy="7" r="2"/>
-                        <circle class="oval2" fill="#91D2FA" cx="3" cy="2" r="2"/>
-                    </g>
+                <g class="grp6" opacity="0" transform="translate(0 28)">
+                    <circle class="oval1" fill="#CC8EF5" cx="2" cy="7" r="2"/>
+                    <circle class="oval2" fill="#91D2FA" cx="3" cy="2" r="2"/>
+                </g>
 
-                    <g class="grp3" opacity="0" transform="translate(52 28)">
-                        <circle class="oval2" fill="#9CD8C3" cx="2" cy="7" r="2"/>
-                        <circle class="oval1" fill="#8CE8C3" cx="4" cy="2" r="2"/>
-                    </g>
+                <g class="grp3" opacity="0" transform="translate(52 28)">
+                    <circle class="oval2" fill="#9CD8C3" cx="2" cy="7" r="2"/>
+                    <circle class="oval1" fill="#8CE8C3" cx="4" cy="2" r="2"/>
+                </g>
 
-                    <g class="grp2" opacity="0" transform="translate(44 6)">
-                        <circle class="oval2" fill="#CC8EF5" cx="5" cy="6" r="2"/>
-                        <circle class="oval1" fill="#CC8EF5" cx="2" cy="2" r="2"/>
-                    </g>
+                <g class="grp2" opacity="0" transform="translate(44 6)">
+                    <circle class="oval2" fill="#CC8EF5" cx="5" cy="6" r="2"/>
+                    <circle class="oval1" fill="#CC8EF5" cx="2" cy="2" r="2"/>
+                </g>
 
-                    <g class="grp5" opacity="0" transform="translate(14 50)">
-                        <circle class="oval1" fill="#91D2FA" cx="6" cy="5" r="2"/>
-                        <circle class="oval2" fill="#91D2FA" cx="2" cy="2" r="2"/>
-                    </g>
+                <g class="grp5" opacity="0" transform="translate(14 50)">
+                    <circle class="oval1" fill="#91D2FA" cx="6" cy="5" r="2"/>
+                    <circle class="oval2" fill="#91D2FA" cx="2" cy="2" r="2"/>
+                </g>
 
-                    <g class="grp4" opacity="0" transform="translate(35 50)">
-                        <circle class="oval1" fill="#F48EA7" cx="6" cy="5" r="2"/>
-                        <circle class="oval2" fill="#F48EA7" cx="2" cy="2" r="2"/>
-                    </g>
+                <g class="grp4" opacity="0" transform="translate(35 50)">
+                    <circle class="oval1" fill="#F48EA7" cx="6" cy="5" r="2"/>
+                    <circle class="oval2" fill="#F48EA7" cx="2" cy="2" r="2"/>
+                </g>
 
-                    <g class="grp1" opacity="0" transform="translate(24)">
-                        <circle class="oval1" fill="#9FC7FA" cx="2.5" cy="3" r="2"/>
-                        <circle class="oval2" fill="#9FC7FA" cx="7.5" cy="2" r="2"/>
-                    </g>
-                    </g>
-                </svg>
-                </label>
-            </div>
+                <g class="grp1" opacity="0" transform="translate(24)">
+                    <circle class="oval1" fill="#9FC7FA" cx="2.5" cy="3" r="2"/>
+                    <circle class="oval2" fill="#9FC7FA" cx="7.5" cy="2" r="2"/>
+                </g>
+                </g>
+            </svg>
+          </label>
+          <img v-if="admin" :src="garbage" alt="" width="25" class="garbage">
         </div>
-        <button class="btn btn-light" v-if="showDetails" @click="this.$router.push(`/${redirectUrl}?id=${this.$props.id}&url=${videoId}`)">{{textButton}}</button>
+      </div>
+      <button style="width:100%" class="btn btn-light" v-if="showDetails" @click="this.$router.push(`/${redirectUrl}?id=${this.$props.id}&url=${videoId}`)">{{textButton}}</button>
     </div>
-</div>
+  </div>
 </div>
 </template>
 
@@ -71,7 +72,9 @@ export default {
     textButton: { type: String, default:"Detalhes" },
     showHeart: { type: Boolean, default: true},
     showDetails: { type: Boolean, default: true},
+    showDescription: { type: Boolean, default: true},
     showImage: { type: Boolean, default: false},
+    admin: { type: Boolean, default: false},
     color: { type: String, default: 'rgb(13, 77, 156)' },
     redirectUrl: { type: String, default: 'course-details' },
     id: Number,
@@ -80,7 +83,10 @@ export default {
   },
   emits: ['like'],
   data() {
+    
     return {
+      edit: require('@/assets/icons/edit_10.svg'),
+      garbage: require('@/assets/icons/lixeira.svg'),
     }
 	},
   computed: {
@@ -96,7 +102,9 @@ export default {
 
 <style lang='scss' scoped>
 .card-title {
-    font-weight: bold;
+  font-weight: bold;
+  height: 100%;
+  margin-bottom: 0 !important;
 }
 .category {
   position: absolute;
@@ -126,16 +134,41 @@ export default {
     background-color: #051d3b;
     box-shadow: 0.31em 0.37em 0.87em 0.87em rgb(0 0 0 / 4%);
     &:hover{
-      /* margin-top: -20px; */
       opacity: 0.9;
     }
     h5 {
-    display: block;
-    margin-block-start: 1.33em;
-    margin-block-end: 1.33em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
+      display: block;
+      margin-block-start: 1.33em;
+      margin-block-end: 1.33em;
+      margin-inline-start: 0px;
+      margin-inline-end: 0px;
+      max-height: 93px;
+      overflow-y: auto;
 
+      &::-webkit-scrollbar-track
+      {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        background-color: #F5F5F5;
+        border-radius: 10px;
+      }
+
+      &::-webkit-scrollbar
+      {
+        width: 5px;
+        background-color: #F5F5F5;
+      }
+
+      &::-webkit-scrollbar-thumb
+      {
+        border-radius: 5px;
+        background-image: 
+          -webkit-gradient(linear,
+          left bottom,
+          left top,
+          color-stop(0.44, rgb(122,153,217)),
+          color-stop(0.72, rgb(73,125,189)),
+          color-stop(0.86, rgb(28,58,148)));
+      }
     }
     p {
         line-height: 1.4;
@@ -274,5 +307,10 @@ svg{
 @keyframes animateHeartOut{
   0%{transform:scale(1.4);}
   100%{transform:scale(1);}
+}
+
+.garbage, .edit{
+  margin-right: 5px;
+  margin-left: 5px;
 }
 </style>

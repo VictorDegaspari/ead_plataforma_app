@@ -5,13 +5,15 @@
     <div class="loading" v-show="loading">
       <Spinner width="100px" height="100px"/> 
     </div>
-    <YouTube 
-      :src="`https://www.youtube.com/watch?v=${this.$route.query.url}`"
-      @ready="onReady"
-      ref="youtube"
-      width="600"
-      height="600"
-    />
+    <div>
+      <YouTube 
+        :src="`https://www.youtube.com/watch?v=${this.$route.query.url}`"
+        @ready="onReady"
+        ref="youtube"
+        width="600"
+        height="600"
+      />
+    </div>
     <div class="background">
       <h2>Curso: {{ name }}</h2>
       <p>Detalhes: {{ detail }}</p>
@@ -65,6 +67,12 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+  .video {
+    position: relative;
+    top: 0;
+    left: 0;
+  }
+
   .detail {
     display: flex;
     align-items: center;
@@ -73,9 +81,6 @@ export default defineComponent({
     min-height: 100vh;
   }
   .background {
-    width: 100%;
-    height: 100px;
-    position: absolute;
     bottom: 0;
     padding: 20px;
     display: flex;
@@ -85,6 +90,7 @@ export default defineComponent({
 
   }
   .container {
+    flex-direction: column;
     margin-left: auto;
     margin-right: auto;
     display: flex;
@@ -93,7 +99,6 @@ export default defineComponent({
     justify-content: center;
     background: white;
     max-width: 650px;
-    height: 750px;
     flex: 0 1 80%;
     box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%), 0 1px 5px 0 rgb(0 0 0 / 12%);
     position: relative;

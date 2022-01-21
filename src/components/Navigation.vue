@@ -37,7 +37,7 @@
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" @click="this.$router.push('/profile')">Perfil</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item">Sair</a></li>
+            <li><a class="dropdown-item" @click.prevent="exit()">Sair</a></li>
           </ul>
         </li>
       </ul>
@@ -67,7 +67,12 @@ export default {
       this.activeItem = menuItem // no need for Vue.set()
     },
     goToProfile() {
-      this.$router.push({path: `/profile`})
+      this.$router.push({path: `/profile`});
+    },
+    exit(){
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+      this.$router.push('/');
     }
   },
   mounted() {

@@ -8,6 +8,7 @@
             </div>
             <div class="right">
                 <h1>Categorias Recomendadas</h1>
+                <Spinner width="80px" height="80px" v-show="loading"/>
                 <div class="m--5 categories" v-for="category in categories" :key="category.id">
                     <Card :showDetails="false" :showHeart="false" :id="category.id" :title="category.name"  :category="category.name" :description="category.description" :color="category.color"/>
                 </div>
@@ -48,12 +49,14 @@
 <script>
 import Carousel from '../../components/Carousel.vue'
 import Card from '../../components/Card.vue';
+import Spinner from '../../components/Spinner.vue';
 import api from '../../api.js';
 
 export default {
     components: {
         Carousel,
-        Card
+        Card,
+        Spinner
     },
     data() {
         return {
@@ -62,13 +65,16 @@ export default {
             Health: require('@/assets/icons/health-point.svg'),
             Categories: require('@/assets/categories.svg'),
             Support: require('@/assets/icons/support.svg'),
-            categories: []
+            categories: [],
+            loading: false
         }
     },
     methods : {
         async recommended() {
+            this.loading = true;
             const recommendedCategories = await api.get(`api/recommended`);
             this.categories = recommendedCategories.data.data;
+            this.loading = false;
         }
     },
     mounted() {

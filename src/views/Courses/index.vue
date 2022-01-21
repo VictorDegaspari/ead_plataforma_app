@@ -2,7 +2,7 @@
   <div class="course-page">
     <header class="m-3">
       <button class="btn btn-dark" @click="showCreate = true" v-show="!showCreate">ADICIONAR CURSO</button>
-      <button class="btn btn-dark" @click="showCreate = false" v-show="showCreate">VOLTAR</button>
+      <button class="btn btn-dark" @click="showCreate = false, coursesResource()" v-show="showCreate">VOLTAR</button>
       <button v-show="this.$route.query.id" @click.prevent="this.$router.push('/courses')" class=" m--5 btn btn-dark">Voltar</button>
     </header>
 
@@ -18,16 +18,16 @@
         v-for="course in courses" :key="course.id"
       >
             <Card 
-              style="margin:5px; height:505px"
-              class="scroll"
+              style="margin:5px; height:482px"
               textButton="Assistir"
               :id="course.id" 
               :title="course.name" 
               :description="course.detail" 
               :category="course?.categories[0]?.name" 
               :color="course?.categories[0]?.color"
-              :showHeart="!course.users[0]?.pivot.admin ? true : false"
+              :admin="course.users[0]?.pivot.admin ? true : false"
               :liked="course.users.length > 0 == user.id ? true : false"
+              :showDescription="false"
               :showImage="true"
               @like="like($event)"
               :videoId="formatUrl(course.url)"
@@ -70,7 +70,7 @@
         </option>
       </select>
       <!-- <a href=""><small>Cadastrar nova categoria</small></a> -->
-      <h3 class="titles">URL</h3>
+      <h3 class="titles">URL <small style="font-size:12px"> <img :src="info"> vídeo previamente upado no YouTube.</small></h3>
       <div class="form-floating mb-3 w-100">
         <input type="text" id="URL" class="form-control" v-model.trim="url" placeholder="URL do vídeo">
         <label for="URL">URL do vídeo:</label>
@@ -110,6 +110,7 @@ export default defineComponent( {
       empty: require('@/assets/empty.svg'),
       course: require('@/assets/createCourse.svg'),
       moon: require('@/assets/moon.svg'),
+      info: require('@/assets/icons/info.svg'),
 
       time: null,
       title: null,
@@ -336,35 +337,5 @@ export default defineComponent( {
     top: 0;
     right: 0;
     background: #15151567;
-  }
-  .scroll {
-    h5 {
-      max-height: 93px;
-      overflow-y: auto;
-      &::-webkit-scrollbar-track
-      {
-        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-        background-color: #F5F5F5;
-        border-radius: 10px;
-      }
-
-      &::-webkit-scrollbar
-      {
-        width: 5px;
-        background-color: #F5F5F5;
-      }
-
-      &::-webkit-scrollbar-thumb
-      {
-        border-radius: 5px;
-        background-image: 
-          -webkit-gradient(linear,
-          left bottom,
-          left top,
-          color-stop(0.44, rgb(122,153,217)),
-          color-stop(0.72, rgb(73,125,189)),
-          color-stop(0.86, rgb(28,58,148)));
-      }
-    }
   }
 </style>

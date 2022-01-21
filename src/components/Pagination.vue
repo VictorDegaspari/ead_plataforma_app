@@ -63,6 +63,11 @@ export default {
         position: fixed;
         right: 35px;
         bottom: 10px;
+        @media (max-width: 800px) {
+            margin-top: 10px;
+            width: 100%;
+            position: relative !important;
+        }
     }
     .active {
         background: #151515 !important;

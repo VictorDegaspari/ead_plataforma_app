@@ -9,7 +9,7 @@
     <div class="flex">
       <div class="main-content">
         <div style="display:flex">
-            <img v-if="admin" :src="edit" alt="" width="30" class="edit">
+            <img v-if="admin" :src="edit" alt="" width="30" class="edit" @click.prevent="this.$router.push(`/edit?id=${id}`)">
             <input v-if="showHeart && !admin" type="checkbox" class="checkbox" :id="id" :checked="liked"/>
             <label v-if="showHeart && !admin" :for="id" style="width:65px">
             <svg class="heart-svg" viewBox="467 392 58 57" xmlns="http://www.w3.org/2000/svg"  v-if="showHeart && !admin" @click="$emit('like', {id: id, liked: liked })">

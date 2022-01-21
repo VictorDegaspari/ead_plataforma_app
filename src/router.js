@@ -51,6 +51,14 @@ const router = VueRouter.createRouter({
             }
         },
         {
+            path: '/edit/:id?',
+            name: 'Course edit',
+            component: () => import('@/views/Courses/edit'),
+            meta: {
+                title: 'Editando curso',
+            }
+        },
+        {
             path: '/home',
             name: 'Home',
             component: () => import('@/views/Home/index'),

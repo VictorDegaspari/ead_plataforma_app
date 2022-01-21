@@ -26,7 +26,7 @@
               :category="course?.categories[0]?.name" 
               :color="course?.categories[0]?.color"
               :admin="course.users[0]?.pivot.admin ? true : false"
-              :liked="course.users.length > 0 == user.id ? true : false"
+              :liked="course.users[0]?.pivot ? true : false"
               :showDescription="false"
               :showImage="true"
               @like="like($event)"
@@ -144,7 +144,7 @@ export default defineComponent( {
     async like(data) {
 
       try {
-        api.post('api/attachCourse', { courseId: data['id'] }) 
+        api.post('api/attachCourse', { courseId: data['id'], userId: this.user?.id }) 
       } catch (error) {
         console.error(error);
       }

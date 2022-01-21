@@ -54,17 +54,29 @@
                 </g>
             </svg>
           </label>
-          <img v-if="admin" :src="garbage" alt="" width="25" class="garbage">
+          <img v-if="admin" :src="garbage" alt="" width="25" class="garbage" @click="showDeleteModal = true">
         </div>
       </div>
       <button style="width:100%" class="btn btn-light" v-if="showDetails" @click="this.$router.push(`/${redirectUrl}?id=${this.$props.id}&url=${videoId}`)">{{textButton}}</button>
+    </div>
+  </div>
+  <div class="modal" v-show="showDeleteModal">
+    <div class="modal-container">
+      <h3 style="margin-bottom:15px">Realmente deseja excluir este curso?</h3>
+      <div>
+        <button class="btn btn-danger" @click.prevent="showDeleteModal = false">Cancelar</button>
+        <button class="btn btn-success" @click.prevent="deleteCourse(id)" style="margin-left:15px">Excluir</button>
+      </div>
     </div>
   </div>
 </div>
 </template>
 
 <script>
+import api from '../api.js';
+
 export default {
+
   props:{
     title: String,
     description: String,
@@ -87,6 +99,7 @@ export default {
     return {
       edit: require('@/assets/icons/edit_10.svg'),
       garbage: require('@/assets/icons/lixeira.svg'),
+      showDeleteModal: false
     }
 	},
   computed: {
@@ -95,6 +108,21 @@ export default {
     },
     categoryStyle(){ 
       return 'background: ' + this.color;
+    },
+  },
+  methods: {
+    async deleteCourse(courseId) {
+      try {
+        await api.delete(`api/courses/${courseId}`);
+        this.showDeleteModal = false;
+        this.$emit('courseDeleted')
+        this.$toast.open({ message: 'curso excluído com sucesso!', type: 'success' });
+
+      } catch(error) {
+        this.showDeleteModal = false;
+        this.$toast.open({ message: 'erro ao excluir curso', type: 'error' });
+
+      }
     }
   }
 }
@@ -122,7 +150,6 @@ export default {
 }
 .card {
     color: #e5f1ff;
-    transition : 0.7s;
     cursor: pointer;
     border: 2px solid;
     -webkit-transition: .3s;
@@ -133,9 +160,6 @@ export default {
     border-bottom-left-radius: 0.5em;
     background-color: #051d3b;
     box-shadow: 0.31em 0.37em 0.87em 0.87em rgb(0 0 0 / 4%);
-    &:hover{
-      opacity: 0.9;
-    }
     h5 {
       display: block;
       margin-block-start: 1.33em;
@@ -308,9 +332,32 @@ svg{
   0%{transform:scale(1.4);}
   100%{transform:scale(1);}
 }
-
+button{
+  &:hover{
+    transition: 0.9s;
+    opacity: 0.8;
+  }
+}
 .garbage, .edit{
   margin-right: 5px;
   margin-left: 5px;
+}
+.modal {
+  width: 100%;
+  min-height: 100vh;
+  background: #3b3a3fa6;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+.modal-container {
+  color: #151515;
+  background: white;
+  position: relative;
+  border-radius: 8px;
+  padding: 15px;
+  max-width: 600px;
 }
 </style>

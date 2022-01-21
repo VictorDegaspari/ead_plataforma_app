@@ -30,6 +30,7 @@
               :showDescription="false"
               :showImage="true"
               @like="like($event)"
+              @courseDeleted="coursesResource()"
               :videoId="formatUrl(course.url)"
             />
       </div>

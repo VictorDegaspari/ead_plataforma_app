@@ -23,9 +23,10 @@
               :color="course?.categories[0]?.color"
               :admin="course.users[0]?.pivot.admin ? true : false"
               :showHeart="!course.users[0]?.pivot.admin ? true : false"
-              :liked="course.users.length > 0 == user.id ? true : false"
+              :liked="course.users[0]?.pivot ? true : false"
               :showImage="true"
               @like="like($event)"
+              @courseDeleted="this.coursesResource()"
               :videoId="formatUrl(course.url)"
 
             />

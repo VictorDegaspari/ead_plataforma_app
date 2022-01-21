@@ -106,7 +106,7 @@ export default defineComponent( {
     },
 
     async coursesResource(page = 'api/courses?page=1') {
-
+      this.loading = true;
       try {
 
         await api.get(page).then(resp => {
@@ -120,11 +120,13 @@ export default defineComponent( {
           this.paginationLastPage = response.last_page_url;
           this.paginationPreviousPage = response.prev_page_url;
           this.paginationNextPage = response.next_page_url;
+          this.loading = false;
+
         });
       } catch (error) {
+        this.loading = false;
         this.$toast.open({ message: 'erro ao carregar cursos', type: 'error' });
         console.error(error);
-
       }
     },
 
@@ -247,7 +249,6 @@ export default defineComponent( {
     left: 0;
     top: 0;
     right: 0;
-    background: #15151567;
   }
   .scroll {
     h5 {
